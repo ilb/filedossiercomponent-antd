@@ -1,0 +1,3 @@
+# filedossiercomponent
+
+Компонент отображения досье
