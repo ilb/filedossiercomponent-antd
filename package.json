@@ -1,5 +1,5 @@
 {
-  "name": "@ilb/filedossier-js",
+  "name": "@ilb/filedossiercomponent",
   "version": "1.0.67",
   "description": "",
   "main": "lib/components/Dossier.js",
