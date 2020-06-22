@@ -103,6 +103,20 @@ export default class FileDossier {
     return result;
   }
 
+  /* Получение контекста */
+  getContext = async ({ fileCode }) => {
+    var { response, error } = await this.apiDossier.getContext(fileCode, ...this.getDossierParams());
+    let result = { fileCode, dossierParams: this.dossierParams, response, error };
+
+    return result;
+  }
+
+  /* Изменение контекста */
+  setContext = async ({ fileCode, data }) => {
+    var response = await this.apiDossier.setContext(fileCode, ...this.getDossierParams(), { data });
+    return response;
+  }
+
   /* Сохранение угла поворота файла */
   saveFileRotation = async ({ file, angle }) => {
     if (file.canSaveRotation) {
@@ -193,7 +207,7 @@ export default class FileDossier {
 
   /**
    * Создает асинхронный метод-обертку для вызова сервисов с последующим обновлением данных досье
-   * соответственно управляет переменными ззапросов loading и error
+   * соответственно управляет переменными запросов loading и error
    * @param {object} state - request state from useDossier
    * @param {function} setState - function to update state
    * @param {function} action - async function with some request action
