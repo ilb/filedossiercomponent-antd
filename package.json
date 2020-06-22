@@ -1,6 +1,6 @@
 {
   "name": "@ilb/filedossiercomponent",
-  "version": "1.0.74",
+  "version": "1.0.75",
   "description": "",
   "main": "lib/components/Dossier.js",
   "scripts": {
