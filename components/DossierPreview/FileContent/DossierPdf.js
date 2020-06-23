@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Message, Loader } from 'semantic-ui-react';
 import ControlsMenu, { getZoomOutScale, getZoomInScale, calcScaleNum, dragToScroll } from './ControlsMenu';
 import PDFJS from 'pdfjs-dist';
-PDFJS.workerSrc = '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.228/pdf.worker.js'; // TODO setup static worker from pdfjs-dist/build
+// PDFJS.workerSrc = '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.228/pdf.worker.js'; // TODO setup static worker from pdfjs-dist/build
 PDFJS.GlobalWorkerOptions.workerSrc = PDFJS.workerSrc;
 
 class DossierPdf extends React.Component {
