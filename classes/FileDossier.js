@@ -120,6 +120,10 @@ export default class FileDossier {
     var response = await this.apiDossier.setContext(fileCode, ...this.getDossierParams(), context);
     return response;
   }
+  setContext2 = async ({ fileCode, context }) => {
+    var response = await this.apiDossier.setContext(fileCode, ...this.getDossierParams(), JSON.stringify(context));
+    return response;
+  }
 
   /* Сохранение угла поворота файла */
   saveFileRotation = async ({ file, angle }) => {
