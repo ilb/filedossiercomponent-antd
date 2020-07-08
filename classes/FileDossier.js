@@ -101,29 +101,7 @@ export default class FileDossier {
     }
 
     return result;
-  }
-
-  /* Получение контекста */
-  getContext = async ({ fileCode }) => {
-    var { response, error } = await this.apiDossier.getContext(fileCode, ...this.getDossierParams());
-    let result = { fileCode, dossierParams: this.dossierParams, response, error };
-
-    return result;
-  }
-
-  /* Изменение контекста */
-  setContext = async ({ fileCode, data }) => {
-    var response = await this.apiDossier.setContext(fileCode, ...this.getDossierParams(), { data });
-    return response;
-  }
-  setContext1 = async ({ fileCode, context }) => {
-    var response = await this.apiDossier.setContext(fileCode, ...this.getDossierParams(), context);
-    return response;
-  }
-  setContext2 = async ({ fileCode, context }) => {
-    var response = await this.apiDossier.setContext(fileCode, ...this.getDossierParams(), JSON.stringify(context));
-    return response;
-  }
+  };
 
   /* Сохранение угла поворота файла */
   saveFileRotation = async ({ file, angle }) => {
@@ -138,7 +116,7 @@ export default class FileDossier {
   download = async ({ fileCode, version, mode }) => {
     const response = await this.apiDossier.download(fileCode, ...this.getDossierParams(), { version, mode });
     return response;
-  }
+  };
 
   getUploadMethod = (merge) => {
     let uploadMethod = merge ? 'update' : 'publish';
@@ -164,31 +142,43 @@ export default class FileDossier {
       if (response && response.error) { return response; }
     }
     return response;
-  }
+  };
 
   /* создает новую версию файла */
   publish = async ({ fileCode, file }) => {
     const response = await this.apiDossier.publish(file, [fileCode, ...this.getDossierParams()]);
     return response;
-  }
+  };
 
   /* создает новую версию файла (для использования на серверной стороне, без изменения порядка аргyментов) */
   publish1 = async ({ fileCode, file }) => {
     const response = await this.apiDossier.publish(fileCode, ...this.getDossierParams(), { file });
     return response;
-  }
+  };
 
   /* сохраняет файл в текущую версию */
   update = async ({ fileCode, file }) => {
     const response = await this.apiDossier.update(file, [fileCode, ...this.getDossierParams()]);
     return response;
-  }
+  };
 
-  /* сохраняет файл в текущую версию */
+  /* сохраняет файл в текущую версию (для использования на серверной стороне, без изменения порядка аргyментов) */
   update1 = async ({ fileCode, file }) => {
     const response = await this.apiDossier.update(fileCode, ...this.getDossierParams(), { file });
     return response;
-  }
+  };
+
+  /** Возвращает контекст файла */
+  getContext = async ({ fileCode }) => {
+    const { response } = await this.apiDossier.getContext(fileCode, ...this.getDossierParams());
+    return response;
+  };
+
+  /* Изменяет контекст файла */
+  setContext = async ({ fileCode, context }) => {
+    const { response } = await this.apiDossier.setContext(fileCode, ...this.getDossierParams(), { body: context });
+    return response;
+  };
 
   /* import file/files from url/urls */
   importFile = async ({ fileCode, url, urls, update }) => {
@@ -211,7 +201,7 @@ export default class FileDossier {
       if (importResult && importResult.error) { return importResult; }
     }
     return importResult;
-  }
+  };
 
   /**
    * Создает асинхронный метод-обертку для вызова сервисов с последующим обновлением данных досье
