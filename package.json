@@ -1,51 +1,40 @@
 {
   "name": "@ilb/filedossiercomponent",
-  "version": "1.0.81",
+  "version": "2.0.0",
   "description": "",
-  "main": "lib/components/Dossier.js",
+  "main": "lib/index.js",
   "scripts": {
-    "dev": "export LDAP_URL=ldaps://devel.net.ilb.ru/c=ru && next",
     "clean": "rimraf lib",
-    "build": "npm run clean && babel classes -d lib/classes && babel components -d lib/components --copy-files && babel conf/config.js -o lib/conf/config.js",
-    "build-next": "next build",
-    "start": "next start",
+    "build": "npm run clean && babel src --out-dir lib",
     "nbignore": "mkdir -p node_modules && touch node_modules/.nbignore && mkdir -p .next && touch .next/.nbignore",
     "versionpatch": "npm version patch",
-    "lint": "eslint ./pages ./components ./classes ./conf ./next.config.js --ext .js --ext .jsx || true"
+    "lint": "eslint ./src --ext .js --ext .jsx || true"
   },
-  "author": "",
+  "author": "krasnoperov <krasnoperov@bystrobank.ru>",
   "license": "ISC",
-  "files": [
-    "lib"
-  ],
+  "repository": {
+    "type": "git",
+    "url": "https://git.ilb.ru/ilb.ru/filedossiercomponent"
+  },
   "dependencies": {
-    "@babel/runtime": "^7.7.2",
-    "@ilb/filedossier-api": "^1.0.31",
-    "@ilb/js-auto-proxy": "^2.0.0",
-    "@ilb/node_context": "^1.0.9",
-    "@zeit/next-css": "^1.0.1",
-    "next": "^9.2.0",
-    "pdfjs-dist": "=2.2.228",
-    "react": "^16.12.0",
-    "react-addons-shallow-compare": "^15.6.2",
-    "react-dom": "^16.12.0",
-    "semantic-ui-offline": "^2.4.1-1",
-    "semantic-ui-react": "^0.87.3",
-    "xmldom": "^0.1.27",
-    "xpath": "0.0.27"
+    "@bb/fetch_parse": "^1.0.1",
+    "form-data": "^2.5.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.0",
-    "@babel/core": "^7.7.2",
-    "@babel/plugin-transform-runtime": "^7.6.2",
-    "@babel/preset-env": "^7.7.1",
+    "@babel/cli": "^7.10.3",
+    "@babel/core": "^7.10.3",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.10.3",
+    "@babel/preset-react": "^7.10.4",
     "babel-eslint": "^8.2.6",
     "eslint": "^4.19.1",
     "eslint-loader": "^2.1.2",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-react": "^7.8.2",
-    "file-loader": "4.2.0",
-    "url-loader": "2.1.0",
-    "webpack": "^4.29.0"
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-react": "^7.20.3"
+  },
+  "peerDependencies": {
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "semantic-ui-react": ">=0.87.3"
   }
 }

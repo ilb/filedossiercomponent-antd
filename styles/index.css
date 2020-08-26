@@ -1,0 +1,203 @@
+.file-dossier-bystroscan-params input {
+  padding: 0.2rem 0.5rem !important;
+  text-align: center !important;
+}
+
+.file-dossier-img-container {
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  height: calc(100% - 28px); /* file-dossier-file-controls height */
+  cursor: grab;
+  line-height: 0;
+}
+
+.file-dossier-img-container img {
+  display: inline-block !important;
+  line-height: 1.5rem;
+  box-shadow: 0 0 13px -5px #777 !important;
+}
+
+.file-dossier-img-container > div:not(:first-child) {
+  margin-top: 10px !important;
+}
+
+.file-dossier-file-content {
+  box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.15) !important;
+}
+
+
+.file-dossier-file-controls {
+  margin: 0 !important;
+  border-radius: 0 !important;
+  min-height: 2rem !important;
+}
+
+.file-dossier-file-controls .item {
+  padding: 0.5rem 0.8rem !important;
+}
+
+.file-dossier-file-controls .item.file-dossier-no-padding {
+  padding: 0 !important;
+}
+
+.file-dossier-file-controls .item input {
+  padding: 0.1rem 0.5rem !important;
+}
+
+.file-dossier-file-controls .menu > .item.disabled,
+.file-dossier-file-controls .menu > .item.disabled:hover {
+  color: rgba(225, 225, 225, 0.3) !important;
+}
+
+.file-dossier-file-controls .file-dossier-page-count-label {
+  white-space: nowrap;
+  margin-left: 0.5rem;
+}
+
+.file-dossier-file-controls .menu:not(.right) > .item:first-child {
+  box-shadow: -1px 0 0 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+.file-dossier-file-controls .file-dossier-file-name > span {
+  white-space: nowrap;
+  max-width: 15rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-dossier-file-controls .file-dossier-scale-selection > .menu > .item:nth-child(3) {
+  border-bottom: 1px solid rgba(34, 36, 38, 0.15) !important;
+}
+
+.file-dossier-dossier-info > .icon {
+  margin: 0 !important;
+}
+
+
+.file-dossier-mirror-horizontal {
+  transform: scaleX(-1) !important;
+  -webkit-transform: scaleX(-1) !important;
+  -moz-transform: scaleX(-1) !important;
+}
+
+.file-dossier-mirror-horizontal::before {
+  left: auto !important;
+  right: 0 !important;
+}
+
+.file-dossier-img-rotate0 {
+  transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+}
+
+.file-dossier-img-rotate90 {
+  transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+}
+
+.file-dossier-img-rotate180 {
+  transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+}
+
+.file-dossier-img-rotate270 {
+  transform: rotate(270deg);
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+}
+
+/* external */
+.external-dossier {
+  display: inline-block;
+}
+
+.external-dossier > .button {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  margin: 0 !important;
+  width: 13rem !important;
+}
+
+.external-dossier-files-list > .item {
+  position: relative;
+}
+
+.external-dossier-files-list > .item > .label {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.external-dossier-files-list > .active.item {
+  box-shadow: 0 0 0 100rem rgba(20, 100, 200, 0.15) inset !important;
+}
+
+.external-thumbnail-file-name {
+  word-wrap: break-word;
+  word-break: break-all;
+  color: rgba(0, 0, 0, 0.8);
+  vertical-align: top !important;
+  margin-top: 0.3rem !important;
+  font-size: 0.8rem !important;
+}
+
+.file-dossier-upload-mode-selection {
+  border-radius: 0 .28571429rem .28571429rem 0 !important;
+  margin: 0 !important;
+}
+
+.file-dossier-upload-mode-selection > .menu {
+  right: 0 !important;
+  left: auto !important;
+}
+
+.compact-external-files-list {
+  position: relative;
+  overflow: hidden;
+  overflow: -moz-hidden-unscrollable;
+  font-size: 0;
+}
+
+.compact-external-files-list > * {
+  font-size: 1rem;
+}
+
+.external-sidebar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: white;
+  font-size: 1rem;
+  box-shadow: 20px 20px 10px -20px rgba(34, 36, 38, 0.15) !important;
+  transition: margin 0.3s ease-out;
+  z-index: 1;
+}
+
+.external-sidebar .external-sidebar-label {
+  display: block;
+  position: absolute;
+  top: 120px;
+  left: 100%;
+  background: bisque;
+  box-shadow: 0 3px 3px rgba(34, 36, 38, 0.15);
+  width: 150px;
+  height: 30px;
+  padding: 3px;
+  text-align: center;
+  transform: rotate(-90deg) translateY(-60px);
+  font-weight: bold;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.external-sidebar:hover {
+  margin-left: 0 !important;
+}
+
+.external-sidebar .external-dossier-files-list > .item {
+  margin-bottom: 1rem !important;
+}
