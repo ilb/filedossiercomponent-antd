@@ -11,8 +11,8 @@ import '@ilb/filedossiercomponent/styles/index.css';
 ```
 
 Include privilegedAPI.js script in your app
-Nextjs example
 ```js
+  // Nextjs example
   import Head from 'next/head';
   ...
   <Head>

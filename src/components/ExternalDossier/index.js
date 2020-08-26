@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal, Grid, List, Message, Dropdown, Label, Checkbox } from 'semantic-ui-react';
 import FileContent from '../DossierViewer/FileContent';

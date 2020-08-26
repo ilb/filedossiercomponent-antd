@@ -187,7 +187,9 @@
     "react/jsx-uses-vars": "error",
     "react/jsx-no-undef": "error",
     "react/react-in-jsx-scope": "off",
-    "react/prop-types": "error"
+    "react/prop-types": "error",
+
+    "import/no-unresolved": ["error", { ignore: ["semantic-ui-react"] }]
   },
   "globals": {
     "production": true,
