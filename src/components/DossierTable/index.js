@@ -5,7 +5,7 @@ import DossierFile from './DossierFile';
 
 export default function DossierTable ({ dossierFiles, actionsState, dossierActions, readOnly }) {
   return (
-    <Table compact celled striped unstackable>
+    <Table compact celled striped unstackable style={{ margin: 0 }}>
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>Файл</Table.HeaderCell>

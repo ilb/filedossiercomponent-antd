@@ -20,4 +20,10 @@ Include privilegedAPI.js script in your app
   </Head>
 ```
 
+WARNING!!! This package is already transpiled, you don't need to use `next-transpile-modules`
+```
+  // DO NOT DO THIS !!!
+  transpileModules: ['@ilb/filedossiercomponent'],
+```
+
 ## Usage
