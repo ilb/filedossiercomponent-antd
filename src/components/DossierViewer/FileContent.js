@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Segment, Message } from 'semantic-ui-react';
+import { Segment, Message, Menu } from 'semantic-ui-react';
 import Thumbnail from './Thumbnail';
 import ImagesViewer from './ImagesViewer';
+import DossierInfo from './ImagesViewer/DossierInfo';
 import FileDossier from '../../classes/FileDossier';
 
 export default function FileContent ({ file, mode, sizes }) {
@@ -13,14 +14,17 @@ export default function FileContent ({ file, mode, sizes }) {
     state: containerState, setState: setContainerState, action: dossierInst.getContainer,
   });
 
-  const createErrorMessage = ({ header, content, warning }) => { // eslint-disable-line react/prop-types
-    if (mode === 'thumbnail') {
-      return (<Message error={!warning} warning={warning} compact header="Ошибка"
-        style={{ margin: 0, position: 'absolute', top: 0, left: 0, right: 0 }}
-        title={`${header}. ${content || ''}`}
-      />);
-    }
-    return (<Message error={!warning} warning={warning} header={header} content={content}/>);
+  const createErrorMessage = ({ header, content, warning, attached }) => { // eslint-disable-line react/prop-types
+    const thumbnailErrorStyle = { margin: 0, position: 'absolute', top: 0, left: 0, right: 0 };
+    return (<Message
+      error={!warning}
+      warning={warning}
+      header={mode === 'thumbnail' ? 'Ошибка' : header}
+      content={mode === 'thumbnail' ? undefined : content}
+      style={mode === 'thumbnail' ? thumbnailErrorStyle : undefined}
+      attached={attached}
+      title={`${header}. ${content || ''}`}
+    />);
   };
 
   // У выбранного файла нужно загрузить контейнер
@@ -82,7 +86,12 @@ export default function FileContent ({ file, mode, sizes }) {
           sizes={sizes}
         />
       }
-      {canDisplayFile && images && images.length === 0 && createErrorMessage({ warning: true, header: `Не найдены изображения в контейнере` })}
+      {canDisplayFile && images && images.length === 0 && <React.Fragment>
+        {createErrorMessage({ warning: true, header: `Не найдены изображения в контейнере`, attached: mode !== 'thumbnail' ? 'top' : undefined })}
+        {mode !== 'thumbnail' && <Menu vertical attached="bottom" style={{ width: 'auto' }}>
+          <DossierInfo file={file}/>
+        </Menu>}
+      </React.Fragment>}
       {!canDisplayFile && createErrorMessage({ header: `Невозможно отобразить файл: ${file.name}` })}
       {!!containerState.error && createErrorMessage({ header: 'Ошибка при загрузке контейнера', content: containerState.error })}
     </Segment>
