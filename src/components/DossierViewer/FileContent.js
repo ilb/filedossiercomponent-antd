@@ -86,14 +86,16 @@ export default function FileContent ({ file, mode, sizes }) {
           sizes={sizes}
         />
       }
-      {canDisplayFile && images && images.length === 0 && <React.Fragment>
-        {createErrorMessage({ warning: true, header: `Не найдены изображения в контейнере`, attached: mode !== 'thumbnail' ? 'top' : undefined })}
-        {mode !== 'thumbnail' && <Menu vertical attached="bottom" style={{ width: 'auto' }}>
+      {canDisplayFile && images && images.length === 0 &&
+        createErrorMessage({ warning: true, header: `Не найдены изображения в контейнере`, attached: mode !== 'thumbnail' ? 'top' : undefined })
+      }
+      {!canDisplayFile && createErrorMessage({ header: `Невозможно отобразить файл: ${file.name}`, attached: mode !== 'thumbnail' ? 'top' : undefined })}
+      {!!containerState.error && createErrorMessage({ header: 'Ошибка при загрузке контейнера', content: containerState.error, attached: mode !== 'thumbnail' ? 'top' : undefined })}
+      {(!canDisplayFile || !!containerState.error || (images && images.length === 0)) && mode !== 'thumbnail' &&
+        <Menu vertical attached="bottom" style={{ width: 'auto' }}>
           <DossierInfo file={file}/>
-        </Menu>}
-      </React.Fragment>}
-      {!canDisplayFile && createErrorMessage({ header: `Невозможно отобразить файл: ${file.name}` })}
-      {!!containerState.error && createErrorMessage({ header: 'Ошибка при загрузке контейнера', content: containerState.error })}
+        </Menu>
+      }
     </Segment>
   );
 }
