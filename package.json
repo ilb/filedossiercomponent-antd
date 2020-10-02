@@ -17,7 +17,7 @@
     "url": "https://git.ilb.ru/ilb.ru/filedossiercomponent"
   },
   "dependencies": {
-    "@bb/fetch_parse": "^1.0.1",
+    "@bb/fetch_parse": "^1.0.2",
     "form-data": "^2.5.1"
   },
   "devDependencies": {
