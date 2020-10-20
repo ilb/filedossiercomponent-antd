@@ -110,7 +110,7 @@ export default class FileDossier {
         attachment: file.path + '&contentDisposition=attachment',
         inline: file.path + '&contentDisposition=inline',
       },
-      lastModified: file.date_create,
+      lastModified: file.lastModified,
       external: true,
     };
 
