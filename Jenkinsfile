@@ -1,14 +1,17 @@
 pipeline {
     agent any
-    environment {
-        PATH = "/opt/nodejs8/bin/:$PATH"
+    options {
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr: '3'))
     }
     stages {
         stage ('Build') {
             steps {
-                sh 'npm install'
-                sh 'npm run build'
-                sh 'npm publish'
+                nodejs('node10') {
+                    sh 'npm install'
+                    sh 'npm run build'
+                    sh 'npm publish'
+               }
             }
         }
     }
