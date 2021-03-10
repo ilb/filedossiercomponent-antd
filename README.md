@@ -27,3 +27,8 @@ WARNING!!! This package is already transpiled, you don't need to use `next-trans
 ```
 
 ## Usage
+
+## development
+
+1. `npm i react react-dom semantic-ui-react`
+2. npm start

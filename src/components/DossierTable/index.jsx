@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Table } from 'semantic-ui-react';
 import DossierFile from './DossierFile';
 
-export default function DossierTable ({ dossierFiles, actionsState, dossierActions, readOnly }) {
+export default function DossierTable({ dossierFiles, actionsState, dossierActions, readOnly }) {
   return (
     <Table compact celled striped unstackable style={{ margin: 0 }}>
       <Table.Header>
@@ -13,7 +13,7 @@ export default function DossierTable ({ dossierFiles, actionsState, dossierActio
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {dossierFiles.map(dossierFile => (
+        {dossierFiles.map((dossierFile) => (
           <DossierFile
             key={dossierFile.code}
             dossierFile={dossierFile}
@@ -31,5 +31,5 @@ DossierTable.propTypes = {
   dossierFiles: PropTypes.array.isRequired,
   actionsState: PropTypes.object.isRequired,
   dossierActions: PropTypes.object.isRequired,
-  readOnly: PropTypes.bool,
+  readOnly: PropTypes.bool
 };

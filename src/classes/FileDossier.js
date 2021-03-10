@@ -1,4 +1,4 @@
-import { parseResponseTry, getContentType } from '@bb/fetch_parse';
+import { parseResponseTry, getContentType } from './fetch_parse';
 import FormData from 'form-data';
 
 export default class FileDossier {
@@ -8,11 +8,15 @@ export default class FileDossier {
   /**
    * @param fetchOptions - primary for server side requests auth - to pass `agent` to all fetch request options
    */
-  constructor ({ dossierParams, basePath, fetchOptions } = {}) {
+  constructor({ dossierParams, basePath, fetchOptions } = {}) {
     // if (!dossierParams || !dossierParams.dossierKey) { throw new Error('You must pass valid {dossierParams} to {FileDossier} constructor'); }
     this.dossierParams = dossierParams; // { dossierKey, dossierPackage, dossierCode, dossierMode };
-    if (basePath) { this.basePath = basePath; }
-    if (fetchOptions) { this.fetchOptions = fetchOptions; }
+    if (basePath) {
+      this.basePath = basePath;
+    }
+    if (fetchOptions) {
+      this.fetchOptions = fetchOptions;
+    }
   }
 
   isBrowser = () => typeof window !== 'undefined';
@@ -31,8 +35,8 @@ export default class FileDossier {
         headers: {
           accept: 'application/json',
           ...((this.fetchOptions && this.fetchOptions.headers) || {}),
-          ...((option && option.headers) || {}),
-        },
+          ...((option && option.headers) || {})
+        }
       });
       const contentType = getContentType(response); // read it before bodyUsed
       result = await parseResponseTry(response);
@@ -68,21 +72,22 @@ export default class FileDossier {
 
   prepareDossier = (dossier) => {
     if (dossier.dossierFile && dossier.dossierFile.length) {
-      dossier.dossierFile = dossier.dossierFile.map(file => {
+      dossier.dossierFile = dossier.dossierFile.map((file) => {
         const preparedFile = {
           ...file,
           type: this.getFileType(file),
           accept: this.getFileAccept(file),
           fileId: this.getFileUniqId(file),
-          canSaveRotation: true,
+          canSaveRotation: true
         };
 
         preparedFile.linksByRel = {};
-        (file.link || []).forEach(link => {
+        (file.link || []).forEach((link) => {
           preparedFile.linksByRel[link.rel] = link.href;
         });
         if (preparedFile.type === 'pdf' && preparedFile.linksByRel.container) {
-          preparedFile.linksByRel.pdfContainer = preparedFile.linksByRel.container + '?path=index.json';
+          preparedFile.linksByRel.pdfContainer =
+            preparedFile.linksByRel.container + '?path=index.json';
         }
 
         return preparedFile;
@@ -108,10 +113,10 @@ export default class FileDossier {
       fileId: file.name,
       linksByRel: {
         attachment: file.path + '&contentDisposition=attachment',
-        inline: file.path + '&contentDisposition=inline',
+        inline: file.path + '&contentDisposition=inline'
       },
       lastModified: file.lastModified,
-      external: true,
+      external: true
     };
 
     if (externalFile.type === 'pdf') {
@@ -127,7 +132,9 @@ export default class FileDossier {
    * @param callback - optional function to set state
    */
   getDossier = async ({ callback } = {}) => {
-    if (callback) { callback({ loading: true, error: null, externalError: null }); }
+    if (callback) {
+      callback({ loading: true, error: null, externalError: null });
+    }
     const dossierParams = { ...this.dossierParams };
     const { dossierKey, dossierPackage, dossierCode, dossierMode, externalDossier } = dossierParams;
     const url = `${this.basePath}/dossiers/${dossierKey}/${dossierPackage}/${dossierCode}/${dossierMode}`;
@@ -142,14 +149,16 @@ export default class FileDossier {
       external: null,
       dossierParams,
       dossier,
-      error,
+      error
     };
 
     if (!error && externalDossier) {
       result.external = await this.getExternalDossier(externalDossier);
     }
 
-    if (callback) { callback(result); }
+    if (callback) {
+      callback(result);
+    }
     return result;
   };
 
@@ -175,19 +184,25 @@ export default class FileDossier {
   /* Сохранение угла поворота файла */
   saveFileRotation = async ({ dossierFile, angle }) => {
     if (dossierFile.canSaveRotation) {
-      await new Promise(resolve => setTimeout(resolve, 100, angle)); // TODO это заглушка, убрать
+      await new Promise((resolve) => setTimeout(resolve, 100, angle)); // TODO это заглушка, убрать
     }
   };
 
   /** Загрyзка файла
-  * @param {object} dossierFile - dossier file
-  * @param {File} file - a file to upload
-  * @param {array{File}} files - array of files to upload (and merge)
-  * @param {bolean} update - if true file will be merged with existed
-  */
+   * @param {object} dossierFile - dossier file
+   * @param {File} file - a file to upload
+   * @param {array{File}} files - array of files to upload (and merge)
+   * @param {bolean} update - if true file will be merged with existed
+   */
   uploadFile = async ({ dossierFile, file, files, update, fileCode }) => {
-    if (!dossierFile) { throw new Error('`dossierFile` is required to `uploadFile`'); }
-    if (fileCode) { throw new Error('`uploadFile` by `fileCode` is deprecated, you need to pass entire `dossierFile` to this method'); }
+    if (!dossierFile) {
+      throw new Error('`dossierFile` is required to `uploadFile`');
+    }
+    if (fileCode) {
+      throw new Error(
+        '`uploadFile` by `fileCode` is deprecated, you need to pass entire `dossierFile` to this method'
+      );
+    }
     const filesToUpload = files || (file && [file]);
     if (!filesToUpload || !filesToUpload.length) {
       return { error: 'Не переданы файлы для загрузки' };
@@ -203,17 +218,23 @@ export default class FileDossier {
       method: 'POST',
       headers: {
         'Content-Type': 'multipart/form-data',
-        accept: '*/*',
+        accept: '*/*'
       },
-      body: formData,
+      body: formData
     });
     return result;
   };
 
   /** Возвращает контекст файла */
   getContext = async ({ dossierFile, fileCode }) => {
-    if (!dossierFile) { throw new Error('`dossierFile` is required to `getContext`'); }
-    if (fileCode) { throw new Error('`getContext` by `fileCode` is deprecated, you need to pass entire `dossierFile` to this method'); }
+    if (!dossierFile) {
+      throw new Error('`dossierFile` is required to `getContext`');
+    }
+    if (fileCode) {
+      throw new Error(
+        '`getContext` by `fileCode` is deprecated, you need to pass entire `dossierFile` to this method'
+      );
+    }
     const url = dossierFile.linksByRel.context;
     if (!url) {
       return { error: 'Не найден url контекста' };
@@ -224,29 +245,43 @@ export default class FileDossier {
 
   /* Изменяет контекст файла */
   setContext = async ({ dossierFile, context, fileCode }) => {
-    if (!dossierFile) { throw new Error('`dossierFile` is required to `setContext`'); }
-    if (fileCode) { throw new Error('`setContext` by `fileCode` is deprecated, you need to pass entire `dossierFile` to this method'); }
+    if (!dossierFile) {
+      throw new Error('`dossierFile` is required to `setContext`');
+    }
+    if (fileCode) {
+      throw new Error(
+        '`setContext` by `fileCode` is deprecated, you need to pass entire `dossierFile` to this method'
+      );
+    }
     const url = dossierFile.linksByRel.context;
     if (!url) {
       return { error: 'Не найден url контекста' };
     }
     let body = context || '{}';
-    if (body && typeof body === 'object') { body = JSON.stringify(body); }
+    if (body && typeof body === 'object') {
+      body = JSON.stringify(body);
+    }
     const result = await this.makeRequest(url, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        accept: '*/*', // TODO так прописано в api, убрать, если всегда json
+        accept: '*/*' // TODO так прописано в api, убрать, если всегда json
       },
-      body,
+      body
     });
     return result;
   };
 
   /* import file/files from url/urls */
   importFile = async ({ dossierFile, url, urls, update, fileCode }) => {
-    if (!dossierFile) { throw new Error('`dossierFile` is required to `importFile`'); }
-    if (fileCode) { throw new Error('`importFile` by `fileCode` is deprecated, you need to pass entire `dossierFile` to this method'); }
+    if (!dossierFile) {
+      throw new Error('`dossierFile` is required to `importFile`');
+    }
+    if (fileCode) {
+      throw new Error(
+        '`importFile` by `fileCode` is deprecated, you need to pass entire `dossierFile` to this method'
+      );
+    }
     const fileUrls = urls || (url && [url]);
     if (!fileUrls || !fileUrls.length) {
       return { error: 'Не переданы файлы для загрузки' };
@@ -262,7 +297,9 @@ export default class FileDossier {
       } else {
         let file;
         if (this.isBrowser()) {
-          file = new Blob([fileResult.value], { type: fileResult.contentType || 'application/octet-stream' });
+          file = new Blob([fileResult.value], {
+            type: fileResult.contentType || 'application/octet-stream'
+          });
         } else {
           file = Buffer.from(fileResult.value);
         }
