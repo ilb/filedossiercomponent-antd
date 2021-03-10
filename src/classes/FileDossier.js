@@ -1,4 +1,4 @@
-import { parseResponseTry, getContentType } from '@bb/fetch_parse';
+import { parseResponseTry, getContentType } from './fetch_parse';
 import FormData from 'form-data';
 
 export default class FileDossier {

@@ -1,6 +1,19 @@
 import React from 'react';
-// import { FileDossier, ExternalFilesList } from './src';
+import { DossierComponent } from './src';
 
 export default function AppForm() {
-  return <h1>Hello from AppForm</h1>;
+  const dossierParams = {
+    dossierKey: 'teststorekey',
+    dossierPackage: 'testmodel',
+    dossierCode: 'TEST',
+    dossierMode: 'mode1'
+  };
+  return (
+    <DossierComponent
+      dossierParams={dossierParams}
+      // basePath="/api/filedossier-web/web"
+      basePath="https://demo01.ilb.ru/filedossier-web/web"
+      mode="preview"
+    />
+  );
 }
