@@ -8,17 +8,21 @@ import contentType from 'content-type';
 export default async function parseResponse(res, options = {}) {
   /* Errors handling */
   if (!res.status || res.status < 200 || res.status >= 400) {
-    const errorText = await res.text() || res.statusText;
+    const errorText = (await res.text()) || res.statusText;
     throw new Error(`${res.status}: ${errorText}`);
   }
 
   /* Parse */
   const { parseType } = options;
   const type = getContentType(res);
-  if (!type && !parseType) { return null; }
+  if (!type && !parseType) {
+    return null;
+  }
 
   const parser = parsers[parseType] || getParserByType(type);
-  if (!parser) { return null; }
+  if (!parser) {
+    return null;
+  }
   const parsedRes = await parser(res);
   return parsedRes;
 }
@@ -47,11 +51,10 @@ export const getContentType = (res) => {
 };
 
 const parsers = {
-  arrayBuffer: res => res.arrayBuffer ? res.arrayBuffer() : res.buffer(),
-  text: res => res.text(),
-  json: res => res.text().then(body => body ? JSON.parse(body) : null),
+  arrayBuffer: (res) => (res.arrayBuffer ? res.arrayBuffer() : res.buffer()),
+  text: (res) => res.text(),
+  json: (res) => res.text().then((body) => (body ? JSON.parse(body) : null))
 };
-
 
 const textTypes = ['text/plain', 'application/xml', 'text/xml'];
 const getParserByType = (type) => {

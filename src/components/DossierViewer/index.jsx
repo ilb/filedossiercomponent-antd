@@ -5,44 +5,67 @@ import UploadForm from '../UploadForm';
 import ExternalDossier from '../ExternalDossier';
 import FileContent from './FileContent';
 
-export default function DossierViewer ({ dossierFiles, external, actionsState, dossierActions, readOnly }) {
+export default function DossierViewer({
+  dossierFiles,
+  external,
+  actionsState,
+  dossierActions,
+  readOnly
+}) {
   const [selectedFileCode, selectFile] = useState(dossierFiles[0].code);
-  const selectedFile = selectedFileCode && dossierFiles.find(file => file.code === selectedFileCode);
+  const selectedFile =
+    selectedFileCode && dossierFiles.find((file) => file.code === selectedFileCode);
 
   return (
     <React.Fragment>
       <div>
-        {dossierFiles.length > 1 &&
-          <Select compact fluid style={{ marginBottom: '0.5rem' }}
-            value={selectedFileCode} text={selectedFile.name}
-            onChange={(event, { value }) => { selectFile(value); }}
-            options={dossierFiles.map(file => ({
-              key: file.code, value: file.code, content: file.name,
+        {dossierFiles.length > 1 && (
+          <Select
+            compact
+            fluid
+            style={{ marginBottom: '0.5rem' }}
+            value={selectedFileCode}
+            text={selectedFile.name}
+            onChange={(event, { value }) => {
+              selectFile(value);
+            }}
+            options={dossierFiles.map((file) => ({
+              key: file.code,
+              value: file.code,
+              content: file.name
             }))}
             selectOnNavigation={false}
             selectOnBlur={false}
           />
-        }
+        )}
 
-        {selectedFile && !(selectedFile.readonly || readOnly) && <div style={{ marginBottom: '0.5rem' }}>
-          {external ? <ExternalDossier
-            file={selectedFile}
-            external={external}
-            actionsState={actionsState}
-            dossierActions={dossierActions}
-          /> : <UploadForm
-            file={selectedFile}
-            actionsState={actionsState}
-            dossierActions={dossierActions}
-          />}
-        </div>}
+        {selectedFile && !(selectedFile.readonly || readOnly) && (
+          <div style={{ marginBottom: '0.5rem' }}>
+            {external ? (
+              <ExternalDossier
+                file={selectedFile}
+                external={external}
+                actionsState={actionsState}
+                dossierActions={dossierActions}
+              />
+            ) : (
+              <UploadForm
+                file={selectedFile}
+                actionsState={actionsState}
+                dossierActions={dossierActions}
+              />
+            )}
+          </div>
+        )}
       </div>
 
-      {selectedFile && selectedFile.exists &&
-        <div style={{ flex: '1 1 auto', height: '100px' }}> {/* min-height 100px */}
-          <FileContent file={selectedFile}/>
+      {selectedFile && selectedFile.exists && (
+        <div style={{ flex: '1 1 auto', height: '100px' }}>
+          {' '}
+          {/* min-height 100px */}
+          <FileContent file={selectedFile} />
         </div>
-      }
+      )}
     </React.Fragment>
   );
 }
@@ -52,5 +75,5 @@ DossierViewer.propTypes = {
   external: PropTypes.object,
   actionsState: PropTypes.object.isRequired,
   dossierActions: PropTypes.object.isRequired,
-  readOnly: PropTypes.bool,
+  readOnly: PropTypes.bool
 };

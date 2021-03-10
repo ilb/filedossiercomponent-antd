@@ -2,19 +2,24 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ControlsMenu, { getZoomOutScale, getZoomInScale, calcScaleNum } from './ControlsMenu';
 
-export default function ImagesViewer ({ file, images, dossierInst, contentRef }) {
+export default function ImagesViewer({ file, images, dossierInst, contentRef }) {
   const initialState = {
-    currentPage: 1, pageText: 1,
-    rotate: 0, rotateLoading: null,
-    scaleValue: 'pageWidthOption', scaleNum: 1,
+    currentPage: 1,
+    pageText: 1,
+    rotate: 0,
+    rotateLoading: null,
+    scaleValue: 'pageWidthOption',
+    scaleNum: 1
   };
   const [state, _setState] = useState(initialState);
   const stateRef = useRef(state); // for event listeners to always get actual state
   const setState = (updates, cb) => {
-    _setState(currentState => {
+    _setState((currentState) => {
       const newState = { ...currentState, ...updates }; // merge updates with previous state
       stateRef.current = newState; // keep actual state in ref
-      if (cb && typeof cb === 'function') { cb(newState); }
+      if (cb && typeof cb === 'function') {
+        cb(newState);
+      }
       return newState;
     });
   };
@@ -30,7 +35,7 @@ export default function ImagesViewer ({ file, images, dossierInst, contentRef })
     imgContainer.addEventListener('DOMMouseScroll', onMouseScrollHandler, false);
     imgContainer.onmousewheel = onMouseScrollHandler;
 
-    return function cleanup () {
+    return function cleanup() {
       imgContainer.removeEventListener('scroll', scrollUpdated, true);
       imgContainer.removeEventListener('DOMMouseScroll', onMouseScrollHandler, false);
     };
@@ -55,7 +60,8 @@ export default function ImagesViewer ({ file, images, dossierInst, contentRef })
       e.stopPropagation();
       const { scaleNum } = stateRef.current;
       if (scaleNum) {
-        const newScaleNum = (e.deltaY || e.detail) > 0 ? getZoomOutScale(scaleNum) : getZoomInScale(scaleNum);
+        const newScaleNum =
+          (e.deltaY || e.detail) > 0 ? getZoomOutScale(scaleNum) : getZoomInScale(scaleNum);
         setScale(newScaleNum);
       }
     }
@@ -90,15 +96,17 @@ export default function ImagesViewer ({ file, images, dossierInst, contentRef })
       }
 
       const hiddenHeight = Math.max(0, viewTop - imgTop) + Math.max(0, imgBottom - viewBottom);
-      const percent = (imgHeight - hiddenHeight) * 100 / imgHeight | 0;
+      const percent = (((imgHeight - hiddenHeight) * 100) / imgHeight) | 0;
 
       visiblePages.push({
         pageNum: i + 1,
-        percent,
+        percent
       });
     }
 
-    if (!visiblePages.length) { return; }
+    if (!visiblePages.length) {
+      return;
+    }
     // calc current page num
     let newPageNum = visiblePages[0].pageNum;
     if (visiblePages[1] && visiblePages[1].percent > visiblePages[0].percent) {
@@ -114,7 +122,9 @@ export default function ImagesViewer ({ file, images, dossierInst, contentRef })
   const dragToScroll = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (document.activeElement) { document.activeElement.blur(); }
+    if (document.activeElement) {
+      document.activeElement.blur();
+    }
     const container = e.currentTarget;
     const startScrollTop = container.scrollTop || 0;
     const startscrollLeft = container.scrollLeft || 0;
@@ -140,7 +150,9 @@ export default function ImagesViewer ({ file, images, dossierInst, contentRef })
   const setPage = (event, { value }) => {
     const pageNum = Number(value);
     if (!pageNum || pageNum > images.length) {
-      if (document.activeElement) { document.activeElement.blur(); }
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
     } else {
       const imgContainer = contentRef.current;
       const imgs = imgContainer.querySelectorAll('img');
@@ -155,12 +167,11 @@ export default function ImagesViewer ({ file, images, dossierInst, contentRef })
     setState({ pageText: value });
   };
 
-
   const setScale = (scale) => {
     const imgContainer = contentRef.current;
     const imgs = imgContainer.querySelectorAll('img');
     const { rotate } = stateRef.current;
-    [].forEach.call(imgs, img => {
+    [].forEach.call(imgs, (img) => {
       setScalePerImg({ img, scale, rotate });
     });
   };
@@ -170,7 +181,13 @@ export default function ImagesViewer ({ file, images, dossierInst, contentRef })
     const { width, height } = window.getComputedStyle(imgContainer);
     const containerSizes = { width: parseFloat(width), height: parseFloat(height) };
     const elementSizes = { width: img.naturalWidth, height: img.naturalHeight };
-    const newScaleNum = calcScaleNum({ scale, rotate, containerSizes, elementSizes, numPages: images.length });
+    const newScaleNum = calcScaleNum({
+      scale,
+      rotate,
+      containerSizes,
+      elementSizes,
+      numPages: images.length
+    });
 
     const newWidth = img.naturalWidth * newScaleNum;
     const newHeight = img.naturalHeight * newScaleNum;
@@ -180,7 +197,8 @@ export default function ImagesViewer ({ file, images, dossierInst, contentRef })
     img.style.height = `${newHeight}px`;
     img.style.minHeight = `${newHeight}px`;
 
-    if (rotate % 180 !== 0) { // 90 or 270
+    if (rotate % 180 !== 0) {
+      // 90 or 270
       const marginOffset = (newWidth - newHeight) / 2;
       img.style.margin = `${marginOffset}px ${-marginOffset}px`;
     } else {
@@ -198,15 +216,22 @@ export default function ImagesViewer ({ file, images, dossierInst, contentRef })
     resetContainerScroll();
     const { rotate } = stateRef.current;
     let newAngle = rotate + angle;
-    if (newAngle < 0) { newAngle = 270; }
-    if (newAngle > 270) { newAngle = 0; }
-    setState({
-      rotate: newAngle,
-      rotateLoading: angle > 0 ? 'CW' : 'CCW', // clockwise / counterclockwise
-    }, (newState) => {
-      // recalc scale after rotate
-      setScale(newState.scaleValue); // NOTE: use scaleValue on rotate
-    });
+    if (newAngle < 0) {
+      newAngle = 270;
+    }
+    if (newAngle > 270) {
+      newAngle = 0;
+    }
+    setState(
+      {
+        rotate: newAngle,
+        rotateLoading: angle > 0 ? 'CW' : 'CCW' // clockwise / counterclockwise
+      },
+      (newState) => {
+        // recalc scale after rotate
+        setScale(newState.scaleValue); // NOTE: use scaleValue on rotate
+      }
+    );
     await dossierInst.saveFileRotation({ dossierFile: file, angle: newAngle });
     setState({ rotateLoading: null });
   };
@@ -222,21 +247,23 @@ export default function ImagesViewer ({ file, images, dossierInst, contentRef })
     <React.Fragment>
       <ControlsMenu
         file={file}
-
         numPages={images.length}
         currentPage={currentPage}
         pageText={pageText}
         setPage={setPage}
         setPageText={setPageText}
-
-        scaleValue={scaleValue} scaleNum={scaleNum} setScale={setScale}
-        rotateFile={rotateFile} rotateLoading={rotateLoading}
+        scaleValue={scaleValue}
+        scaleNum={scaleNum}
+        setScale={setScale}
+        rotateFile={rotateFile}
+        rotateLoading={rotateLoading}
       />
 
       <div className="file-dossier-img-container" ref={contentRef}>
         {images.map((image) => (
           <div key={image.name}>
-            <img src={image.src} // key={image.src}
+            <img
+              src={image.src} // key={image.src}
               className={`ui fluid image file-dossier-img-rotate${rotate}`}
               onLoad={imageOnLoadHandler}
               // alt="Не удалось отобразить preview файла"
@@ -252,5 +279,5 @@ ImagesViewer.propTypes = {
   file: PropTypes.object.isRequired,
   images: PropTypes.array.isRequired,
   dossierInst: PropTypes.object.isRequired,
-  contentRef: PropTypes.object.isRequired,
+  contentRef: PropTypes.object.isRequired
 };

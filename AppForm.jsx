@@ -10,6 +10,7 @@ export default function AppForm() {
   };
   return (
     <DossierComponent
+      height="calc(100vh - 10rem)"
       dossierParams={dossierParams}
       // basePath="/api/filedossier-web/web"
       basePath="https://demo01.ilb.ru/filedossier-web/web"

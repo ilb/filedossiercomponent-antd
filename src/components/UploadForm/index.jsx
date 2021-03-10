@@ -6,11 +6,15 @@ import PrivAPI from './PrivAPI';
 const makeRainbow = (text) => {
   const colors = ['red', 'orange', 'yellow', 'green', 'aqua', 'blue', 'navy'];
   return (text || '').split('').map((char, index) => (
-    <span key={index} style={{ color: colors[index % colors.length], textShadow: '1px 1px 0 black' }}>{char}</span>
+    <span
+      key={index}
+      style={{ color: colors[index % colors.length], textShadow: '1px 1px 0 black' }}>
+      {char}
+    </span>
   ));
 };
 
-export default function UploadForm ({ file, actionsState, dossierActions, uploadCallback }) {
+export default function UploadForm({ file, actionsState, dossierActions, uploadCallback }) {
   const { fileId, accept, allowedMultiple } = file;
   const { loading } = actionsState;
   const [state, _setState] = useState({ scanColor: 'color', scanDpi: '150', uploadMode: 'new' });
@@ -26,7 +30,9 @@ export default function UploadForm ({ file, actionsState, dossierActions, upload
     let fileName, fileTitle;
     if (files && files.length) {
       fileName = files.length === 1 ? files[0].name : `Выбрано файлов: ${files.length}`;
-      fileTitle = Array.from(files).map(file => file.name).join(' \n');
+      fileTitle = Array.from(files)
+        .map((file) => file.name)
+        .join(' \n');
     }
     setState({ fileName, fileTitle });
   };
@@ -48,7 +54,7 @@ export default function UploadForm ({ file, actionsState, dossierActions, upload
       fileinputid,
       color,
       dpi,
-      onscanfinish: scanFinish,
+      onscanfinish: scanFinish
     });
   };
 
@@ -59,13 +65,16 @@ export default function UploadForm ({ file, actionsState, dossierActions, upload
 
   const uploadFile = async () => {
     const fileInput = document.querySelector(`#${fileId}`);
-    if (!fileInput) { alert(`Не найден input с id=${fileId}`); return; }
+    if (!fileInput) {
+      alert(`Не найден input с id=${fileId}`);
+      return;
+    }
 
     const files = fileName && fileInput.files;
     const result = await dossierActions.uploadFile({
       dossierFile: file,
       files,
-      update: uploadMode === 'merge',
+      update: uploadMode === 'merge'
     });
 
     // reset file input
@@ -81,17 +90,28 @@ export default function UploadForm ({ file, actionsState, dossierActions, upload
 
   return (
     <div className="file-dossier-upload-form">
-      <Button type="button" basic attached="left" content="БыстроСкан" onClick={scanStart} disabled={loading}/>
+      <Button
+        type="button"
+        basic
+        attached="left"
+        content="БыстроСкан"
+        onClick={scanStart}
+        disabled={loading}
+      />
       <Dropdown simple basic icon="setting" open={false} className="right attached button icon">
         <Dropdown.Menu className="file-dossier-bystroscan-params" style={{ padding: '0.5rem' }}>
           <div>
-            <Radio name="scanColor" value="color"
+            <Radio
+              name="scanColor"
+              value="color"
               label={makeRainbow('цветное')}
               checked={scanColor === 'color'}
               onChange={changeField}
               style={{ marginRight: '0.5rem' }}
             />
-            <Radio name="scanColor" value="bw"
+            <Radio
+              name="scanColor"
+              value="bw"
               label="ч/б"
               checked={scanColor === 'bw'}
               onChange={changeField}
@@ -99,8 +119,14 @@ export default function UploadForm ({ file, actionsState, dossierActions, upload
           </div>
           <div>
             <label>Разрешение</label>
-            <Input title="Разрешение" type="text" name="scanDpi" maxLength="3" size="mini"
-              value={scanDpi} onChange={changeField}
+            <Input
+              title="Разрешение"
+              type="text"
+              name="scanDpi"
+              maxLength="3"
+              size="mini"
+              value={scanDpi}
+              onChange={changeField}
               style={{ width: '3rem', margin: '0 0.25rem', textAlign: 'center' }}
             />
             <label>dpi</label>
@@ -108,25 +134,65 @@ export default function UploadForm ({ file, actionsState, dossierActions, upload
         </Dropdown.Menu>
       </Dropdown>
 
-      <Button as="div" basic className="file-dossier-file-button" disabled={loading} title={fileTitle}
-        style={{ position: 'relative', overflow: 'hidden', width: '13rem', whiteSpace: 'nowrap', textOverflow: 'ellipsis', margin: '0 0.5rem', verticalAlign: 'top' }}
-      >
+      <Button
+        as="div"
+        basic
+        className="file-dossier-file-button"
+        disabled={loading}
+        title={fileTitle}
+        style={{
+          position: 'relative',
+          overflow: 'hidden',
+          width: '13rem',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          margin: '0 0.5rem',
+          verticalAlign: 'top'
+        }}>
         <span>{fileName || 'Выбрать файл'}</span>
-        <input type="file" id={fileId} accept={accept} multiple={allowedMultiple} onChange={selectFile} disabled={loading}
-          style={{ position: 'absolute', top: 0, right: 0, minWidth: '100%', minHeight: '100%', opacity: 0, outline: 'none', cursor: 'inherit', display: 'block', padding: 0 }}
+        <input
+          type="file"
+          id={fileId}
+          accept={accept}
+          multiple={allowedMultiple}
+          onChange={selectFile}
+          disabled={loading}
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            minWidth: '100%',
+            minHeight: '100%',
+            opacity: 0,
+            outline: 'none',
+            cursor: 'inherit',
+            display: 'block',
+            padding: 0
+          }}
         />
       </Button>
 
-      <Button type="button" color="green" attached="left" content="Загрузить" onClick={uploadFile} loading={loading} disabled={loading}/>
-      <Dropdown text=" "
+      <Button
+        type="button"
+        color="green"
+        attached="left"
+        content="Загрузить"
+        onClick={uploadFile}
+        loading={loading}
+        disabled={loading}
+      />
+      <Dropdown
+        text=" "
         // className="right attached button green icon"
         className="right attached button green icon file-dossier-upload-mode-selection"
         icon={`${uploadMode === 'merge' ? 'copy' : 'file'} outline`}
-        onChange={(e, { value }) => { setState({ uploadMode: value }); }}
+        onChange={(e, { value }) => {
+          setState({ uploadMode: value });
+        }}
         value={uploadMode}
         options={[
           { key: 'new', text: 'Загрузить новый файл', value: 'new', icon: 'file outline' },
-          { key: 'merge', text: 'Объединить файлы', value: 'merge', icon: 'copy outline' },
+          { key: 'merge', text: 'Объединить файлы', value: 'merge', icon: 'copy outline' }
         ]}
       />
     </div>
@@ -137,5 +203,5 @@ UploadForm.propTypes = {
   file: PropTypes.object.isRequired,
   actionsState: PropTypes.object.isRequired,
   dossierActions: PropTypes.object.isRequired,
-  uploadCallback: PropTypes.func,
+  uploadCallback: PropTypes.func
 };

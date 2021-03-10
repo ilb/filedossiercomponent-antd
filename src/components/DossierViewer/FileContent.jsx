@@ -6,25 +6,35 @@ import ImagesViewer from './ImagesViewer';
 import DossierInfo from './ImagesViewer/DossierInfo';
 import FileDossier from '../../classes/FileDossier';
 
-export default function FileContent ({ file, mode, sizes }) {
+export default function FileContent({ file, mode, sizes }) {
   const dossierInst = new FileDossier();
   // Стейт для данных о контейнере файла
-  const [containerState, setContainerState] = useState({ loading: false, error: null, value: null });
-  const getContainer = dossierInst.createAction({ description: 'Загрузка контейнера файла',
-    state: containerState, setState: setContainerState, action: dossierInst.getContainer,
+  const [containerState, setContainerState] = useState({
+    loading: false,
+    error: null,
+    value: null
+  });
+  const getContainer = dossierInst.createAction({
+    description: 'Загрузка контейнера файла',
+    state: containerState,
+    setState: setContainerState,
+    action: dossierInst.getContainer
   });
 
-  const createErrorMessage = ({ header, content, warning, attached }) => { // eslint-disable-line react/prop-types
+  const createErrorMessage = ({ header, content, warning, attached }) => {
+    // eslint-disable-line react/prop-types
     const thumbnailErrorStyle = { margin: 0, position: 'absolute', top: 0, left: 0, right: 0 };
-    return (<Message
-      error={!warning}
-      warning={warning}
-      header={mode === 'thumbnail' ? 'Ошибка' : header}
-      content={mode === 'thumbnail' ? undefined : content}
-      style={mode === 'thumbnail' ? thumbnailErrorStyle : undefined}
-      attached={attached}
-      title={`${header}. ${content || ''}`}
-    />);
+    return (
+      <Message
+        error={!warning}
+        warning={warning}
+        header={mode === 'thumbnail' ? 'Ошибка' : header}
+        content={mode === 'thumbnail' ? undefined : content}
+        style={mode === 'thumbnail' ? thumbnailErrorStyle : undefined}
+        attached={attached}
+        title={`${header}. ${content || ''}`}
+      />
+    );
   };
 
   // У выбранного файла нужно загрузить контейнер
@@ -48,19 +58,23 @@ export default function FileContent ({ file, mode, sizes }) {
   let images;
   if (canDisplayFile) {
     if (file.type === 'image') {
-      images = [{
-        lastModified: file.lastModified,
-        name: file.name,
-        src: makeImageSrcUniq({ src: file.linksByRel.inline, lastModified: file.lastModified }),
-      }];
+      images = [
+        {
+          lastModified: file.lastModified,
+          name: file.name,
+          src: makeImageSrcUniq({ src: file.linksByRel.inline, lastModified: file.lastModified })
+        }
+      ];
     } else {
       if (hasContainer && containerState.value && containerState.url) {
-        images = containerState.value.map(img => ({
+        images = containerState.value.map((img) => ({
           ...img,
           src: makeImageSrcUniq({
-            src: `${containerState.url.replace(/\/index.json$/, '')}/${encodeURIComponent(img.name)}`,
-            lastModified: file.lastModified,
-          }),
+            src: `${containerState.url.replace(/\/index.json$/, '')}/${encodeURIComponent(
+              img.name
+            )}`,
+            lastModified: file.lastModified
+          })
         }));
       }
     }
@@ -68,16 +82,28 @@ export default function FileContent ({ file, mode, sizes }) {
 
   let ImagesComponent;
   switch (mode) {
-    case 'thumbnail': ImagesComponent = Thumbnail; break;
-    default: ImagesComponent = ImagesViewer;
+    case 'thumbnail':
+      ImagesComponent = Thumbnail;
+      break;
+    default:
+      ImagesComponent = ImagesViewer;
   }
   const contentRef = useRef(null);
 
   return (
-    <Segment basic loading={containerState.loading} className="file-dossier-file-content"
-      style={{ position: 'relative', width: '100%', height: '100%', padding: 0, margin: 0, minHeight: '46px' }}
-    >
-      {canDisplayFile && images && images.length > 0 &&
+    <Segment
+      basic
+      loading={containerState.loading}
+      className="file-dossier-file-content"
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        padding: 0,
+        margin: 0,
+        minHeight: '46px'
+      }}>
+      {canDisplayFile && images && images.length > 0 && (
         <ImagesComponent
           file={file}
           images={images}
@@ -85,17 +111,32 @@ export default function FileContent ({ file, mode, sizes }) {
           contentRef={contentRef}
           sizes={sizes}
         />
-      }
-      {canDisplayFile && images && images.length === 0 &&
-        createErrorMessage({ warning: true, header: `Не найдены изображения в контейнере`, attached: mode !== 'thumbnail' ? 'top' : undefined })
-      }
-      {!canDisplayFile && createErrorMessage({ header: `Невозможно отобразить файл: ${file.name}`, attached: mode !== 'thumbnail' ? 'top' : undefined })}
-      {!!containerState.error && createErrorMessage({ header: 'Ошибка при загрузке контейнера', content: containerState.error, attached: mode !== 'thumbnail' ? 'top' : undefined })}
-      {(!canDisplayFile || !!containerState.error || (images && images.length === 0)) && mode !== 'thumbnail' &&
-        <Menu vertical attached="bottom" style={{ width: 'auto' }}>
-          <DossierInfo file={file}/>
-        </Menu>
-      }
+      )}
+      {canDisplayFile &&
+        images &&
+        images.length === 0 &&
+        createErrorMessage({
+          warning: true,
+          header: `Не найдены изображения в контейнере`,
+          attached: mode !== 'thumbnail' ? 'top' : undefined
+        })}
+      {!canDisplayFile &&
+        createErrorMessage({
+          header: `Невозможно отобразить файл: ${file.name}`,
+          attached: mode !== 'thumbnail' ? 'top' : undefined
+        })}
+      {!!containerState.error &&
+        createErrorMessage({
+          header: 'Ошибка при загрузке контейнера',
+          content: containerState.error,
+          attached: mode !== 'thumbnail' ? 'top' : undefined
+        })}
+      {(!canDisplayFile || !!containerState.error || (images && images.length === 0)) &&
+        mode !== 'thumbnail' && (
+          <Menu vertical attached="bottom" style={{ width: 'auto' }}>
+            <DossierInfo file={file} />
+          </Menu>
+        )}
     </Segment>
   );
 }
@@ -103,5 +144,5 @@ export default function FileContent ({ file, mode, sizes }) {
 FileContent.propTypes = {
   file: PropTypes.object.isRequired,
   mode: PropTypes.string,
-  sizes: PropTypes.object,
+  sizes: PropTypes.object
 };

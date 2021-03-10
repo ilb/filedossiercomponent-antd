@@ -3,27 +3,30 @@ import PropTypes from 'prop-types';
 import { List } from 'semantic-ui-react';
 import FileContent from '../DossierViewer/FileContent';
 
-export default function ExternalFilesList ({ files }) {
-  if (!files || !files.length) { return null; }
+export default function ExternalFilesList({ files }) {
+  if (!files || !files.length) {
+    return null;
+  }
   const [selectedFile, selectFile] = useState(files[0]);
 
   const thumbnailSizes = {
     width: 120,
-    height: 170,
+    height: 170
   };
 
   const renderFileThumbnail = (externalFile) => {
     return (
-      <List.Item key={externalFile.path} style={{ display: 'inline-block' }}
+      <List.Item
+        key={externalFile.path}
+        style={{ display: 'inline-block' }}
         active={externalFile.path === selectedFile.path}
-        onClick={() => { selectFile(externalFile); }}
-      >
-        <FileContent
-          file={externalFile}
-          mode="thumbnail"
-          sizes={thumbnailSizes}
-        />
-        <div className="external-thumbnail-file-name" style={{ width: `${thumbnailSizes.width}px` }}>
+        onClick={() => {
+          selectFile(externalFile);
+        }}>
+        <FileContent file={externalFile} mode="thumbnail" sizes={thumbnailSizes} />
+        <div
+          className="external-thumbnail-file-name"
+          style={{ width: `${thumbnailSizes.width}px` }}>
           {externalFile.name}
         </div>
       </List.Item>
@@ -32,21 +35,28 @@ export default function ExternalFilesList ({ files }) {
 
   return (
     <div className="compact-external-files-list" style={{ width: '100%', height: '100%' }}>
-      <div className="external-sidebar" style={{ height: '100%', width: `${thumbnailSizes.width + 46}px`, marginLeft: `-${thumbnailSizes.width + 46}px` }}>
-        <List selection style={{ height: '100%', overflow: 'auto', padding: '1rem' }} className="external-dossier-files-list">
+      <div
+        className="external-sidebar"
+        style={{
+          height: '100%',
+          width: `${thumbnailSizes.width + 46}px`,
+          marginLeft: `-${thumbnailSizes.width + 46}px`
+        }}>
+        <List
+          selection
+          style={{ height: '100%', overflow: 'auto', padding: '1rem' }}
+          className="external-dossier-files-list">
           {files.map(renderFileThumbnail)}
         </List>
         <div className="external-sidebar-label">
-          Файлы: {files.findIndex(f => f.path === selectedFile.path) + 1} / {files.length}
+          Файлы: {files.findIndex((f) => f.path === selectedFile.path) + 1} / {files.length}
         </div>
       </div>
-      {selectedFile &&
-        <FileContent file={selectedFile}/>
-      }
+      {selectedFile && <FileContent file={selectedFile} />}
     </div>
   );
 }
 
 ExternalFilesList.propTypes = {
-  files: PropTypes.array.isRequired,
+  files: PropTypes.array.isRequired
 };
