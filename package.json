@@ -5,10 +5,10 @@
   "main": "lib/index.js",
   "scripts": {
     "clean": "rimraf lib",
-    "build": "npm run clean && babel src --out-dir lib",
-    "nbignore": "mkdir -p node_modules && touch node_modules/.nbignore && mkdir -p .next && touch .next/.nbignore",
-    "versionpatch": "npm version patch",
-    "lint": "eslint ./src --ext .js --ext .jsx || true"
+    "build": "snowpack build",
+    "start": "snowpack dev",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "author": "krasnoperov <krasnoperov@bystrobank.ru>",
   "license": "ISC",
@@ -18,7 +18,10 @@
   },
   "dependencies": {
     "@bb/fetch_parse": "^1.0.2",
-    "form-data": "^2.5.1"
+    "form-data": "^2.5.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "semantic-ui-react": "^2.0.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.3",
@@ -27,15 +30,24 @@
     "@babel/plugin-transform-runtime": "^7.11.0",
     "@babel/preset-env": "^7.10.3",
     "@babel/preset-react": "^7.10.4",
-    "babel-eslint": "^8.2.6",
-    "eslint": "^4.19.1",
-    "eslint-loader": "^2.1.2",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-react": "^7.20.3"
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.6.3",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-jest": "^24.1.3",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "jest": "^26.6.3",
+    "prettier": "^2.2.1",
+    "snowpack": "^3.0.11",
+    "semantic-ui-offline": "^2.4.1-1"
   },
   "peerDependencies": {
     "prop-types": "^15.7.2",
-    "react": "^16.12.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "semantic-ui-react": ">=0.87.3"
   }
 }
