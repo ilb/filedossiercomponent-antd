@@ -7,7 +7,7 @@ npm install --save @ilb/filedossiercomponent
 
 Import styles (without css-modules!!!)
 ```js
-import '@ilb/filedossiercomponent/styles/index.css';
+import '@ilb/filedossiercomponent/src/index.css';
 ```
 
 Include privilegedAPI.js script in your app
@@ -20,9 +20,8 @@ Include privilegedAPI.js script in your app
   </Head>
 ```
 
-WARNING!!! This package is already transpiled, you don't need to use `next-transpile-modules`
+This package is NOT transpiled, you need to use `next-transpile-modules`
 ```
-  // DO NOT DO THIS !!!
   transpileModules: ['@ilb/filedossiercomponent'],
 ```
 
@@ -31,4 +30,4 @@ WARNING!!! This package is already transpiled, you don't need to use `next-trans
 ## development
 
 1. `npm i react react-dom semantic-ui-react`
-2. npm start
+2. `npm start`

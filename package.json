@@ -2,7 +2,7 @@
   "name": "@ilb/filedossiercomponent",
   "version": "2.0.8",
   "description": "",
-  "main": "lib/index.js",
+  "main": "src/index.jsx",
   "scripts": {
     "clean": "rimraf lib",
     "build": "snowpack build",
@@ -16,19 +16,17 @@
     "type": "git",
     "url": "https://git.ilb.ru/ilb.ru/filedossiercomponent"
   },
+  "files": [
+    "src"
+  ],
   "dependencies": {
+    "content-type": "^1.0.4",
     "form-data": "^2.5.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "semantic-ui-react": "^2.0.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.3",
-    "@babel/core": "^7.10.3",
-    "@babel/plugin-proposal-class-properties": "^7.10.4",
-    "@babel/plugin-transform-runtime": "^7.11.0",
-    "@babel/preset-env": "^7.10.3",
-    "@babel/preset-react": "^7.10.4",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
     "eslint": "^7.20.0",
