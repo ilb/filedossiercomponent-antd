@@ -4,7 +4,7 @@ import { DossierComponent } from './src';
 export default function AppForm() {
   const dossierParams = {
     dossierKey: 'teststorekey',
-    dossierPackage: 'testmodel',
+    dossierPackage: 'testimg',
     dossierCode: 'TEST',
     dossierMode: 'mode1'
   };
