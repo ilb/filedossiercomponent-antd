@@ -1,6 +1,6 @@
 {
   "name": "@ilb/filedossiercomponent",
-  "version": "2.0.10",
+  "version": "2.0.11",
   "description": "",
   "main": "src/index.jsx",
   "scripts": {
@@ -24,7 +24,8 @@
     "form-data": "^2.5.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "semantic-ui-react": "^2.0.3"
+    "react-dropzone": "^11.3.2",
+    "semantic-ui-react": ">=0.87.3"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
@@ -36,11 +37,11 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "http-proxy": "^1.18.1",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
-    "snowpack": "^3.0.11",
     "semantic-ui-offline": "^2.4.1-1",
-    "http-proxy": "^1.18.1"
+    "snowpack": "^3.0.11"
   },
   "peerDependencies": {
     "prop-types": "^15.7.2",
