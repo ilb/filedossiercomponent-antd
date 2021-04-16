@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage ('Build') {
             steps {
-                sh 'npm publish'
+                #sh 'npm publish'
             }
         }
     }
