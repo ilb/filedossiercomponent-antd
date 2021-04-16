@@ -4,6 +4,7 @@ import { Segment, Header, Message } from 'semantic-ui-react';
 import FileDossier from '../classes/FileDossier';
 import DossierViewer from './DossierViewer';
 import DossierTable from './DossierTable';
+import DossierDropzone from './DossierDropzone';
 
 export default function DossierComponent(props) {
   const { dossierParams, preloadedDossierData, basePath, dossierDataChangeHandler } = props;
@@ -64,6 +65,9 @@ export default function DossierComponent(props) {
       break;
     case 'table':
       FilesComponent = DossierTable;
+      break;
+    case 'dropzone':
+      FilesComponent = DossierDropzone;
       break;
     default:
       FilesComponent = DossierTable; // default as table
