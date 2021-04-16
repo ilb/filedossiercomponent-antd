@@ -47,7 +47,6 @@ const DossierDropzone = ({ dossierFiles, external, actionsState, dossierActions,
           overflow: 'hidden'
         }}
         src={file.preview}
-        label={selectedFile.name}
       />
       <Label attached="top right">{selectedFile.name}</Label>
       {!actionsState.error && <Icon color="green" name="check circle" />}
