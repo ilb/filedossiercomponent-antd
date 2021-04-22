@@ -5,6 +5,7 @@ import FileDossier from '../classes/FileDossier';
 import DossierViewer from './DossierViewer';
 import DossierTable from './DossierTable';
 import DossierDropzone from './DossierDropzone';
+import DossierTabs from './DossierTabs';
 
 export default function DossierComponent(props) {
   const { dossierParams, preloadedDossierData, basePath, dossierDataChangeHandler } = props;
@@ -68,6 +69,9 @@ export default function DossierComponent(props) {
       break;
     case 'dropzone':
       FilesComponent = DossierDropzone;
+      break;
+    case 'tabs':
+      FilesComponent = DossierTabs;
       break;
     default:
       FilesComponent = DossierTable; // default as table
