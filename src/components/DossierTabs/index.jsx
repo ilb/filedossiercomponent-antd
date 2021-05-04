@@ -69,7 +69,7 @@ export default function DossierTabs({
                 "Заменить файл", чтобы загрузить новую версию документа.
               </p>
             </div>
-            {dossierFiles.length > 1 && (
+            {dossierFiles.length > 0 && (
               <Menu fluid pointing vertical>
                 {dossierFiles.map((df) => {
                   return (
@@ -79,7 +79,7 @@ export default function DossierTabs({
                       active={df.code === selectedFileCode}
                       onClick={onTabChange}>
                       <div>{df.name}</div>
-                      {df.code === selectedFileCode && (
+                      {df.code === selectedFileCode && !df.readonly && (
                         <Segment.Group
                           horizontal
                           style={{
