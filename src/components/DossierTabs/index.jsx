@@ -65,8 +65,8 @@ export default function DossierTabs({
             <div style={{ marginBottom: 16 }}>
               <Header>Досье</Header>
               <p>
-                Нажмите "Обновить файл", чтобы объединить новые документы с уже существующими, либо
-                "Заменить файл", чтобы загрузить новую версию документа.
+                Нажмите "Добавить файл", чтобы добавить новые страницы/документы, либо "Заменить
+                файл", чтобы загрузить новую версию документа.
               </p>
             </div>
             {dossierFiles.length > 0 && (
@@ -91,10 +91,11 @@ export default function DossierTabs({
                             style={{
                               minHeight: 0
                             }}>
-                            <div {...updateDropzone.getRootProps({ className: 'updateDropzone' })}>
-                              <div style={{ opacity: 0.7, marginBottom: 8 }}>Обновите файл</div>
-                              <div style={{ opacity: 0.3 }}>Нажмите или перетащите</div>
-                              <input {...updateDropzone.getInputProps()} />
+                            <div
+                              {...replaceDropzone.getRootProps({ className: 'replaceDropzone' })}>
+                              <div style={{ opacity: 0.7, marginBottom: 8 }}>Заменить файл</div>
+                              <div style={{ opacity: 0.3 }}>Нажмите или перетащите</div>{' '}
+                              <input {...replaceDropzone.getInputProps()} />
                             </div>
                           </Segment>
                           <Segment
@@ -102,11 +103,10 @@ export default function DossierTabs({
                             style={{
                               minHeight: 0
                             }}>
-                            <div
-                              {...replaceDropzone.getRootProps({ className: 'replaceDropzone' })}>
-                              <div style={{ opacity: 0.7, marginBottom: 8 }}>Замените файл</div>
-                              <div style={{ opacity: 0.3 }}>Нажмите или перетащите</div>{' '}
-                              <input {...replaceDropzone.getInputProps()} />
+                            <div {...updateDropzone.getRootProps({ className: 'updateDropzone' })}>
+                              <div style={{ opacity: 0.7, marginBottom: 8 }}>Добавить файл</div>
+                              <div style={{ opacity: 0.3 }}>Нажмите или перетащите</div>
+                              <input {...updateDropzone.getInputProps()} />
                             </div>
                           </Segment>
                         </Segment.Group>
