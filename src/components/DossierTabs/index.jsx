@@ -91,11 +91,10 @@ export default function DossierTabs({
                             style={{
                               minHeight: 0
                             }}>
-                            <div
-                              {...replaceDropzone.getRootProps({ className: 'replaceDropzone' })}>
-                              <div style={{ opacity: 0.7, marginBottom: 8 }}>Заменить файл</div>
-                              <div style={{ opacity: 0.3 }}>Нажмите или перетащите</div>{' '}
-                              <input {...replaceDropzone.getInputProps()} />
+                            <div {...updateDropzone.getRootProps({ className: 'updateDropzone' })}>
+                              <div style={{ opacity: 0.7, marginBottom: 8 }}>Добавить файл</div>
+                              <div style={{ opacity: 0.3 }}>Нажмите или перетащите</div>
+                              <input {...updateDropzone.getInputProps()} />
                             </div>
                           </Segment>
                           <Segment
@@ -103,10 +102,11 @@ export default function DossierTabs({
                             style={{
                               minHeight: 0
                             }}>
-                            <div {...updateDropzone.getRootProps({ className: 'updateDropzone' })}>
-                              <div style={{ opacity: 0.7, marginBottom: 8 }}>Добавить файл</div>
-                              <div style={{ opacity: 0.3 }}>Нажмите или перетащите</div>
-                              <input {...updateDropzone.getInputProps()} />
+                            <div
+                              {...replaceDropzone.getRootProps({ className: 'replaceDropzone' })}>
+                              <div style={{ opacity: 0.7, marginBottom: 8 }}>Заменить файл</div>
+                              <div style={{ opacity: 0.3 }}>Нажмите или перетащите</div>{' '}
+                              <input {...replaceDropzone.getInputProps()} />
                             </div>
                           </Segment>
                         </Segment.Group>
