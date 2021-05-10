@@ -59,9 +59,9 @@ export default function DossierTabs({
 
   return (
     <React.Fragment>
-      <Grid columns="2" container>
+      <Grid reversed='computer vertically'>
         <Grid.Row>
-          <Grid.Column computer="8">
+          
             <div style={{ marginBottom: 16 }}>
               <Header>Досье</Header>
               <p>
@@ -116,9 +116,7 @@ export default function DossierTabs({
                 })}
               </Menu>
             )}
-          </Grid.Column>
 
-          <Grid.Column computer="8">
             <Segment piled style={{ height: '95vh' }}>
               {selectedFile && selectedFile.exists && (
                 <div style={{ flex: '1 1 auto', height: '90vh' }}>
@@ -128,7 +126,6 @@ export default function DossierTabs({
                 </div>
               )}
             </Segment>
-          </Grid.Column>
         </Grid.Row>
       </Grid>
     </React.Fragment>
