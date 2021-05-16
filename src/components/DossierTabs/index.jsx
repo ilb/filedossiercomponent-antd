@@ -11,7 +11,8 @@ export default function DossierTabs({
   external,
   actionsState,
   dossierActions,
-  readOnly
+  readOnly,
+  onUploadHandler
 }) {
   const [droppedFiles, setDroppedFiles] = useState([]);
   const [selectedFileCode, selectFile] = useState(dossierFiles[0].code);
@@ -37,6 +38,7 @@ export default function DossierTabs({
         files: acceptedFiles,
         update: true
       });
+      onUploadHandler && onUploadHandler(selectedFile);
     }
   });
 
@@ -54,78 +56,77 @@ export default function DossierTabs({
         dossierFile: selectedFile,
         files: acceptedFiles
       });
+      onUploadHandler && onUploadHandler(selectedFile);
     }
   });
 
   return (
     <React.Fragment>
-      <Grid reversed='computer vertically'>
+      <Grid reversed="computer vertically">
         <Grid.Row>
-          
-            <div style={{ marginBottom: 16 }}>
-              <Header>Досье</Header>
-              <p>
-                Нажмите "Добавить файл", чтобы добавить новые страницы/документы, либо "Заменить
-                файл", чтобы загрузить новую версию документа.
-              </p>
-            </div>
-            {dossierFiles.length > 0 && (
-              <Menu fluid pointing vertical>
-                {dossierFiles.map((df) => {
-                  return (
-                    <Menu.Item
-                      key={df.code}
-                      name={df.code}
-                      active={df.code === selectedFileCode}
-                      onClick={onTabChange}>
-                      <div>{df.name}</div>
-                      {df.code === selectedFileCode && !df.readonly && (
-                        <Segment.Group
-                          horizontal
+          <div style={{ marginBottom: 16 }}>
+            <Header>Досье</Header>
+            <p>
+              Нажмите "Добавить файл", чтобы добавить новые страницы/документы, либо "Заменить
+              файл", чтобы загрузить новую версию документа.
+            </p>
+          </div>
+          {dossierFiles.length > 0 && (
+            <Menu fluid vertical>
+              {dossierFiles.map((df) => {
+                return (
+                  <Menu.Item
+                    key={df.code}
+                    name={df.code}
+                    active={df.code === selectedFileCode}
+                    onClick={onTabChange}>
+                    <div>{df.name}</div>
+                    {df.code === selectedFileCode && !df.readonly && (
+                      <Segment.Group
+                        horizontal
+                        style={{
+                          border: '1px',
+                          borderStyle: 'dashed'
+                        }}>
+                        <Segment
+                          textAlign="center"
                           style={{
-                            border: '1px',
-                            borderStyle: 'dashed'
+                            minHeight: 0
                           }}>
-                          <Segment
-                            textAlign="center"
-                            style={{
-                              minHeight: 0
-                            }}>
-                            <div {...updateDropzone.getRootProps({ className: 'updateDropzone' })}>
-                              <div style={{ opacity: 0.7, marginBottom: 8 }}>Добавить файл</div>
-                              <div style={{ opacity: 0.3 }}>Нажмите или перетащите</div>
-                              <input {...updateDropzone.getInputProps()} />
-                            </div>
-                          </Segment>
-                          <Segment
-                            textAlign="center"
-                            style={{
-                              minHeight: 0
-                            }}>
-                            <div
-                              {...replaceDropzone.getRootProps({ className: 'replaceDropzone' })}>
-                              <div style={{ opacity: 0.7, marginBottom: 8 }}>Заменить файл</div>
-                              <div style={{ opacity: 0.3 }}>Нажмите или перетащите</div>{' '}
-                              <input {...replaceDropzone.getInputProps()} />
-                            </div>
-                          </Segment>
-                        </Segment.Group>
-                      )}
-                    </Menu.Item>
-                  );
-                })}
-              </Menu>
-            )}
+                          <div {...updateDropzone.getRootProps({ className: 'updateDropzone' })}>
+                            <div style={{ opacity: 0.7, marginBottom: 8 }}>Добавить файл</div>
+                            <div style={{ opacity: 0.3 }}>Нажмите или перетащите</div>
+                            <input {...updateDropzone.getInputProps()} />
+                          </div>
+                        </Segment>
+                        <Segment
+                          textAlign="center"
+                          style={{
+                            minHeight: 0
+                          }}>
+                          <div {...replaceDropzone.getRootProps({ className: 'replaceDropzone' })}>
+                            <div style={{ opacity: 0.7, marginBottom: 8 }}>Заменить файл</div>
+                            <div style={{ opacity: 0.3 }}>Нажмите или перетащите</div>{' '}
+                            <input {...replaceDropzone.getInputProps()} />
+                          </div>
+                        </Segment>
+                      </Segment.Group>
+                    )}
+                  </Menu.Item>
+                );
+              })}
+            </Menu>
+          )}
 
-            <Segment piled style={{ height: '95vh' }}>
-              {selectedFile && selectedFile.exists && (
-                <div style={{ flex: '1 1 auto', height: '90vh' }}>
-                  {' '}
-                  {/* min-height 100px */}
-                  <FileContent file={selectedFile} />
-                </div>
-              )}
-            </Segment>
+          <Segment piled style={{ height: '70vh', width: '90vh' }}>
+            {selectedFile && selectedFile.exists && (
+              <div style={{ flex: '1 1 auto', height: '65vh' }}>
+                {' '}
+                {/* min-height 100px */}
+                <FileContent file={selectedFile} />
+              </div>
+            )}
+          </Segment>
         </Grid.Row>
       </Grid>
     </React.Fragment>
