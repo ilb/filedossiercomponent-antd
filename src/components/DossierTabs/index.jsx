@@ -11,7 +11,8 @@ export default function DossierTabs({
   external,
   actionsState,
   dossierActions,
-  readOnly
+  readOnly,
+  onUploadHandler
 }) {
   const [droppedFiles, setDroppedFiles] = useState([]);
   const [selectedFileCode, selectFile] = useState(dossierFiles[0].code);
@@ -37,6 +38,7 @@ export default function DossierTabs({
         files: acceptedFiles,
         update: true
       });
+      onUploadHandler && onUploadHandler(selectedFile);
     }
   });
 
@@ -54,6 +56,7 @@ export default function DossierTabs({
         dossierFile: selectedFile,
         files: acceptedFiles
       });
+      onUploadHandler && onUploadHandler(selectedFile);
     }
   });
 

@@ -8,7 +8,13 @@ import DossierDropzone from './DossierDropzone';
 import DossierTabs from './DossierTabs';
 
 export default function DossierComponent(props) {
-  const { dossierParams, preloadedDossierData, basePath, dossierDataChangeHandler } = props;
+  const {
+    dossierParams,
+    preloadedDossierData,
+    basePath,
+    dossierDataChangeHandler,
+    onUploadHandler
+  } = props;
   var [dossierData, _setDossierData] = useState({
     loading: false,
     error: null,
@@ -140,6 +146,7 @@ export default function DossierComponent(props) {
             actionsState={actionsState}
             dossierActions={dossierActions}
             readOnly={readOnly}
+            onUploadHandler={onUploadHandler}
           />
         )}
       </div>
