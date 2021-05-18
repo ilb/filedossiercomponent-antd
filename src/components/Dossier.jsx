@@ -141,6 +141,7 @@ export default function DossierComponent(props) {
 
         {dossier && dossierFiles.length > 0 && (
           <FilesComponent
+            basePath={basePath}
             dossierFiles={dossierFiles}
             external={external}
             actionsState={actionsState}
