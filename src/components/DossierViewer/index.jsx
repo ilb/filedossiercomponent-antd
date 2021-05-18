@@ -6,6 +6,7 @@ import ExternalDossier from '../ExternalDossier';
 import FileContent from './FileContent';
 
 export default function DossierViewer({
+  basePath,
   dossierFiles,
   external,
   actionsState,
@@ -63,7 +64,7 @@ export default function DossierViewer({
         <div style={{ flex: '1 1 auto', height: '100px' }}>
           {' '}
           {/* min-height 100px */}
-          <FileContent file={selectedFile} />
+          <FileContent basePath={basePath} file={selectedFile} />
         </div>
       )}
     </React.Fragment>

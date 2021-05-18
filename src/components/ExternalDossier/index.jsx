@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import { Button, Modal, Grid, List, Message, Dropdown, Label, Checkbox } from 'semantic-ui-react';
 import FileContent from '../DossierViewer/FileContent';
 
-export default function ExternalDossier({ file, external, actionsState, dossierActions }) {
+export default function ExternalDossier({
+  basePath,
+  file,
+  external,
+  actionsState,
+  dossierActions
+}) {
   const { value: externalFiles } = external;
   if (!externalFiles || !externalFiles.length) {
     return null;
@@ -94,7 +100,7 @@ export default function ExternalDossier({ file, external, actionsState, dossierA
               </List>
             </Grid.Column>
             <Grid.Column style={{ width: 'calc(100% - 450px)', height: '100%' }}>
-              {selectedFile && <FileContent file={selectedFile} />}
+              {selectedFile && <FileContent basePath={basePath} file={selectedFile} />}
             </Grid.Column>
           </Grid>
         </Modal.Content>
