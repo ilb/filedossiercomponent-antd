@@ -6,8 +6,8 @@ import ImagesViewer from './ImagesViewer';
 import DossierInfo from './ImagesViewer/DossierInfo';
 import FileDossier from '../../classes/FileDossier';
 
-export default function FileContent({ file, mode, sizes }) {
-  const dossierInst = new FileDossier();
+export default function FileContent({ basePath, file, mode, sizes }) {
+  const dossierInst = new FileDossier({ basePath });
   // Стейт для данных о контейнере файла
   const [containerState, setContainerState] = useState({
     loading: false,

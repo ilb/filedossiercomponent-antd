@@ -7,6 +7,7 @@ import FileContent from '../DossierViewer/FileContent';
 import { useDropzone } from 'react-dropzone';
 
 export default function DossierTabs({
+  basePath,
   dossierFiles,
   external,
   actionsState,
@@ -123,7 +124,7 @@ export default function DossierTabs({
               <div style={{ flex: '1 1 auto', height: '65vh' }}>
                 {' '}
                 {/* min-height 100px */}
-                <FileContent file={selectedFile} />
+                <FileContent basePath={basePath} file={selectedFile} />
               </div>
             )}
           </Segment>

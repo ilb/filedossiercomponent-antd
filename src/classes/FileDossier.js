@@ -21,6 +21,13 @@ export default class FileDossier {
 
   isBrowser = () => typeof window !== 'undefined';
 
+  // Temporary solution
+  // @TODO: remove hostnames from filedossier API
+  replaceBasePath = (url) => {
+    const parsed = new URL(url);
+    return `${this.basePath}/dossiers/${parsed.pathname.split('dossiers/')[1]}${parsed.search}`;
+  };
+
   /**
    * Make fetch request and parse response
    * @return object { error, value, url }
@@ -177,7 +184,7 @@ export default class FileDossier {
     if (!url) {
       return { error: 'Не найден url контейнера' };
     }
-    const result = await this.makeRequest(url);
+    const result = await this.makeRequest(this.replaceBasePath(url));
     return result;
   };
 
@@ -214,7 +221,7 @@ export default class FileDossier {
       formData.append(`file_${i}`, f);
     });
 
-    const result = await this.makeRequest(url, {
+    const result = await this.makeRequest(this.replaceBasePath(url), {
       method: 'POST',
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -239,7 +246,7 @@ export default class FileDossier {
     if (!url) {
       return { error: 'Не найден url контекста' };
     }
-    const result = await this.makeRequest(url);
+    const result = await this.makeRequest(this.replaceBasePath(url));
     return result;
   };
 
@@ -261,7 +268,7 @@ export default class FileDossier {
     if (body && typeof body === 'object') {
       body = JSON.stringify(body);
     }
-    const result = await this.makeRequest(url, {
+    const result = await this.makeRequest(this.replaceBasePath(url), {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -291,7 +298,9 @@ export default class FileDossier {
     for (let i = 0; i < fileUrls.length; i++) {
       /* load all files as array buffer */
       const fileUrl = encodeURI(fileUrls[i]);
-      const fileResult = await this.makeRequest(fileUrl, { headers: { accept: '*/*' } });
+      const fileResult = await this.makeRequest(this.replaceBasePath(fileUrl), {
+        headers: { accept: '*/*' }
+      });
       if (fileResult.error || !fileResult.value) {
         return fileResult; // stop if any errors or empty file
       } else {
