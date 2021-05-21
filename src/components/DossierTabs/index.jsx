@@ -1,44 +1,40 @@
-import React, { useState } from 'react';
-import { Divider, Grid, GridColumn, Header, Icon, Menu, Segment } from 'semantic-ui-react';
+import React, { useEffect, useState } from 'react';
+import { Grid, Header, Icon, Label, Menu, Segment, Transition } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import UploadForm from '../UploadForm';
-import ExternalDossier from '../ExternalDossier';
 import FileContent from '../DossierViewer/FileContent';
 import { useDropzone } from 'react-dropzone';
 
 export default function DossierTabs({
   basePath,
   dossierFiles,
-  external,
   actionsState,
   dossierActions,
-  readOnly,
   onUploadHandler
 }) {
-  const [droppedFiles, setDroppedFiles] = useState([]);
   const [selectedFileCode, selectFile] = useState(dossierFiles[0].code);
+  const [filesUploaded, setFilesUploaded] = useState(false);
   const selectedFile =
     selectedFileCode && dossierFiles.find((file) => file.code === selectedFileCode);
 
   const onTabChange = (e, { name }) => {
+    setFilesUploaded(false);
     selectFile(name);
   };
 
   const updateDropzone = useDropzone({
     accept: selectedFile.allowedMediaTypes,
     onDrop: async (acceptedFiles) => {
-      setDroppedFiles(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file)
-          })
-        )
-      );
       await dossierActions.uploadFile({
         dossierFile: selectedFile,
         files: acceptedFiles,
         update: true
       });
+      setFilesUploaded(true);
+
+      setTimeout(() => {
+        setFilesUploaded(false);
+      }, 3000);
+
       onUploadHandler && onUploadHandler(selectedFile);
     }
   });
@@ -46,17 +42,16 @@ export default function DossierTabs({
   const replaceDropzone = useDropzone({
     accept: selectedFile.allowedMediaTypes,
     onDrop: async (acceptedFiles) => {
-      setDroppedFiles(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file)
-          })
-        )
-      );
       await dossierActions.uploadFile({
         dossierFile: selectedFile,
         files: acceptedFiles
       });
+      setFilesUploaded(true);
+
+      setTimeout(() => {
+        setFilesUploaded(false);
+      }, 3000);
+
       onUploadHandler && onUploadHandler(selectedFile);
     }
   });
@@ -81,7 +76,18 @@ export default function DossierTabs({
                     name={df.code}
                     active={df.code === selectedFileCode}
                     onClick={onTabChange}>
-                    <div>{df.name}</div>
+                    <div>
+                      {df.name}
+                      <Transition
+                        visible={df.code === selectedFile.code && df.exists && filesUploaded}
+                        animation="scale"
+                        duration={500}>
+                        <Label attached="right">
+                          <Icon name="check circle" color="green" loading={actionsState.loading} />
+                          Файл загружен
+                        </Label>
+                      </Transition>
+                    </div>
                     {df.code === selectedFileCode && !df.readonly && (
                       <Segment.Group
                         horizontal
@@ -121,11 +127,7 @@ export default function DossierTabs({
 
           <Segment piled style={{ height: '70vh', width: '90vh' }}>
             {selectedFile && selectedFile.exists && (
-              <div style={{ flex: '1 1 auto', height: '65vh' }}>
-                {' '}
-                {/* min-height 100px */}
-                <FileContent basePath={basePath} file={selectedFile} />
-              </div>
+              <FileContent basePath={basePath} file={selectedFile} />
             )}
           </Segment>
         </Grid.Row>
