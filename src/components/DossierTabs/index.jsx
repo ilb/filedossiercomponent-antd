@@ -58,8 +58,8 @@ export default function DossierTabs({
 
   return (
     <React.Fragment>
-      <Grid reversed="computer vertically">
-        <Grid.Row>
+      <Grid>
+        <Grid.Column>
           <div style={{ marginBottom: 16 }}>
             <Header>Досье</Header>
             <p>
@@ -130,7 +130,7 @@ export default function DossierTabs({
               <FileContent basePath={basePath} file={selectedFile} />
             )}
           </Segment>
-        </Grid.Row>
+        </Grid.Column>
       </Grid>
     </React.Fragment>
   );
