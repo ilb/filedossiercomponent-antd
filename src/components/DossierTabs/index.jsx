@@ -125,7 +125,15 @@ export default function DossierTabs({
             </Menu>
           )}
 
-          <Segment piled style={{ minHeight: '30vh', minWidth:'75vh'}}>
+          <Segment
+            piled
+            style={{
+              height: '90vh',
+              width: 'auto',
+              marginTop: 16,
+              marginLeft: 'auto',
+              marginRight: 'auto'
+            }}>
             {selectedFile && selectedFile.exists && (
               <FileContent basePath={basePath} file={selectedFile} />
             )}
