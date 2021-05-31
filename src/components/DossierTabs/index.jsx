@@ -82,7 +82,7 @@ export default function DossierTabs({
                         visible={df.code === selectedFile.code && df.exists && filesUploaded}
                         animation="scale"
                         duration={500}>
-                        <Label attached="right">
+                        <Label attached="top right">
                           <Icon name="check circle" color="green" loading={actionsState.loading} />
                           Файл загружен
                         </Label>
@@ -134,6 +134,10 @@ export default function DossierTabs({
               marginLeft: 'auto',
               marginRight: 'auto'
             }}>
+<<<<<<< HEAD
+
+=======
+>>>>>>> 932874fb8bc72455a7a3f3e1f1584ed7c2f38756
             {selectedFile && selectedFile.exists && (
               <FileContent basePath={basePath} file={selectedFile} />
             )}
