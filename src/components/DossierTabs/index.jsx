@@ -134,7 +134,10 @@ export default function DossierTabs({
               marginLeft: 'auto',
               marginRight: 'auto'
             }}>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 932874fb8bc72455a7a3f3e1f1584ed7c2f38756
             {selectedFile && selectedFile.exists && (
               <FileContent basePath={basePath} file={selectedFile} />
             )}
