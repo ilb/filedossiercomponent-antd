@@ -11,10 +11,14 @@ export default function DossierTabs({
   dossierActions,
   onUploadHandler
 }) {
-  const [selectedFileCode, selectFile] = useState(dossierFiles[0].code);
+  const [selectedFileCode, selectFile] = useState();
   const [filesUploaded, setFilesUploaded] = useState(false);
   const selectedFile =
     selectedFileCode && dossierFiles.find((file) => file.code === selectedFileCode);
+
+  useEffect(async () => {
+    selectFile(dossierFiles[0].code);
+  }, [dossierFiles])
 
   const onTabChange = (e, { name }) => {
     setFilesUploaded(false);
