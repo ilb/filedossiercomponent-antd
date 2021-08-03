@@ -11,22 +11,24 @@ export default function DossierTabs({
   dossierActions,
   onUploadHandler
 }) {
-  const [selectedFileCode, selectFile] = useState();
+  const [selectedFile, selectFile] = useState();
   const [filesUploaded, setFilesUploaded] = useState(false);
-  const selectedFile =
-    selectedFileCode && dossierFiles.find((file) => file.code === selectedFileCode);
 
   useEffect(async () => {
-    selectFile(dossierFiles[0].code);
-  }, [dossierFiles])
+    if (!dossierFiles.find(({ code }) => code === selectedFile?.code)) {
+      selectFile(dossierFiles[0]);
+    } else {
+      selectFile(dossierFiles.find(({ code }) => code === selectedFile.code)); // force reload current dossier file to reload preview
+    }
+  }, [dossierFiles]);
 
   const onTabChange = (e, { name }) => {
     setFilesUploaded(false);
-    selectFile(name);
+    selectFile(dossierFiles.find(({ code }) => code === name));
   };
 
   const updateDropzone = useDropzone({
-    accept: selectedFile.allowedMediaTypes,
+    accept: selectedFile?.allowedMediaTypes,
     onDrop: async (acceptedFiles) => {
       await dossierActions.uploadFile({
         dossierFile: selectedFile,
@@ -44,7 +46,7 @@ export default function DossierTabs({
   });
 
   const replaceDropzone = useDropzone({
-    accept: selectedFile.allowedMediaTypes,
+    accept: selectedFile?.allowedMediaTypes,
     onDrop: async (acceptedFiles) => {
       await dossierActions.uploadFile({
         dossierFile: selectedFile,
@@ -78,12 +80,12 @@ export default function DossierTabs({
                   <Menu.Item
                     key={df.code}
                     name={df.code}
-                    active={df.code === selectedFileCode}
+                    active={df.code === selectedFile?.code}
                     onClick={onTabChange}>
                     <div>
                       {df.name}
                       <Transition
-                        visible={df.code === selectedFile.code && df.exists && filesUploaded}
+                        visible={df.code === selectedFile?.code && df.exists && filesUploaded}
                         animation="scale"
                         duration={500}>
                         <Label attached="top right">
@@ -92,7 +94,7 @@ export default function DossierTabs({
                         </Label>
                       </Transition>
                     </div>
-                    {df.code === selectedFileCode && !df.readonly && (
+                    {df.code === selectedFile?.code && !df.readonly && (
                       <Segment.Group
                         horizontal
                         style={{
@@ -132,15 +134,13 @@ export default function DossierTabs({
           <Segment
             piled
             style={{
-              height: '90vh',
+              height: '100vh',
               width: 'auto',
               marginTop: 16,
               marginLeft: 'auto',
               marginRight: 'auto'
             }}>
-            {selectedFile && selectedFile.exists && (
-              <FileContent basePath={basePath} file={selectedFile} />
-            )}
+            {selectedFile?.exists && <FileContent basePath={basePath} file={selectedFile} />}
           </Segment>
         </Grid.Column>
       </Grid>
