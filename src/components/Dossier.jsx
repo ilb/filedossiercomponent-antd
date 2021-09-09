@@ -6,6 +6,7 @@ import DossierViewer from './DossierViewer';
 import DossierTable from './DossierTable';
 import DossierDropzone from './DossierDropzone';
 import DossierTabs from './DossierTabs';
+import DossierInlineTabs from './DossierInlineTabs';
 
 export default function DossierComponent(props) {
   const {
@@ -78,6 +79,9 @@ export default function DossierComponent(props) {
       break;
     case 'tabs':
       FilesComponent = DossierTabs;
+      break;
+    case 'inline_tabs':
+      FilesComponent = DossierInlineTabs;
       break;
     default:
       FilesComponent = DossierTable; // default as table
