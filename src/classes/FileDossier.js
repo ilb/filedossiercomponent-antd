@@ -1,5 +1,6 @@
 import { parseResponseTry, getContentType } from './fetch_parse';
 import FormData from 'form-data';
+import fetch from 'isomorphic-fetch';
 
 export default class FileDossier {
   fetchOptions = {};
