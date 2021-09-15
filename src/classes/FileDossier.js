@@ -1,6 +1,7 @@
-import { parseResponseTry, getContentType } from './fetch_parse';
 import FormData from 'form-data';
 import fetch from 'isomorphic-fetch';
+
+import { parseResponseTry, getContentType } from '../utils/response';
 
 export default class FileDossier {
   fetchOptions = {};
