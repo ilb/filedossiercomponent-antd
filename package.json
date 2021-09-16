@@ -48,6 +48,7 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "semantic-ui-react": ">=0.87.3"
+    "semantic-ui-react": ">=0.87.3",
+    "uniforms": "^3.6.0"
   }
 }
