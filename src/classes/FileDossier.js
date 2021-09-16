@@ -1,6 +1,7 @@
-import { parseResponseTry, getContentType } from './fetch_parse';
 import FormData from 'form-data';
 import fetch from 'isomorphic-fetch';
+
+import { parseResponseTry, getContentType } from '../utils/response';
 
 export default class FileDossier {
   fetchOptions = {};
@@ -332,7 +333,7 @@ export default class FileDossier {
   createAction = ({ state = {}, setState, action, callback, description }) => async (...params) => {
     setState({ ...state, loading: true, error: null, description });
     const result = await action(...params);
-    if (result.error) {
+    if (result && result.error) {
       setState({ ...state, loading: false, error: result.error, description });
       return result;
     }
