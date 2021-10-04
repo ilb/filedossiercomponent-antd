@@ -1,5 +1,5 @@
 import React from 'react';
-import { DossierComponent } from './src';
+import { DossierComponent } from '../src';
 
 export default function AppForm() {
   const dossierParams = {
@@ -13,7 +13,7 @@ export default function AppForm() {
       height="calc(100vh - 10rem)"
       dossierParams={dossierParams}
       // basePath="/api/filedossier-web/web"
-      basePath="https://demo01.ilb.ru/filedossier-web/web"
+      basePath="https://avclick.ru/filedossier-web/web"
       mode="preview"
     />
   );
