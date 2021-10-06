@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ControlsMenu, { getZoomOutScale, getZoomInScale, calcScaleNum } from './ControlsMenu';
+import { Sticky } from 'semantic-ui-react';
 
 export default function ImagesViewer({ file, images, dossierInst, contentRef }) {
   const initialState = {
@@ -245,21 +246,23 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
   const { currentPage, pageText, scaleValue, scaleNum, rotate, rotateLoading } = state;
   return (
     <React.Fragment>
-      <ControlsMenu
-        file={file}
-        numPages={images.length}
-        currentPage={currentPage}
-        pageText={pageText}
-        setPage={setPage}
-        setPageText={setPageText}
-        scaleValue={scaleValue}
-        scaleNum={scaleNum}
-        setScale={setScale}
-        rotateFile={rotateFile}
-        rotateLoading={rotateLoading}
-      />
-
-      <div className="file-dossier-img-container" ref={contentRef}>
+      <Sticky>
+        <ControlsMenu
+          attached="top"
+          file={file}
+          numPages={images.length}
+          currentPage={currentPage}
+          pageText={pageText}
+          setPage={setPage}
+          setPageText={setPageText}
+          scaleValue={scaleValue}
+          scaleNum={scaleNum}
+          setScale={setScale}
+          rotateFile={rotateFile}
+          rotateLoading={rotateLoading}
+        />
+      </Sticky>
+      <div attached="bottom" className="file-dossier-img-container" ref={contentRef}>
         {images.map((image) => (
           <div key={image.name}>
             <img
