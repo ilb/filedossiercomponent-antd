@@ -14,7 +14,7 @@ export default function AppForm() {
       dossierParams={dossierParams}
       // basePath="/api/filedossier-web/web"
       basePath="https://avclick.ru/filedossier-web/web"
-      mode="preview"
+      mode="tabs"
     />
   );
 }
