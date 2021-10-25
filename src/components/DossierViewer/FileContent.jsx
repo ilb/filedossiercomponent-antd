@@ -70,7 +70,7 @@ export default function FileContent({ basePath, file, mode, sizes }) {
         images = containerState.value.map((img) => ({
           ...img,
           src: makeImageSrcUniq({
-            src: `${containerState.url.replace(/\/index.json$/, '')}/${encodeURIComponent(
+            src: `${containerState.url.replace(/index\.json\//, '')}/${encodeURIComponent(
               img.name
             )}`,
             lastModified: file.lastModified
