@@ -163,7 +163,9 @@ function ControlsMenu({
           <Menu.Item
             link
             icon="undo"
-            onClick={rotateFile.bind(this, -90)}
+            page={currentPage}
+            angle={-90}
+            onClick={rotateFile}
             disabled={!!rotateLoading}
           />
         )}
@@ -171,7 +173,9 @@ function ControlsMenu({
           <Menu.Item
             link
             icon="undo"
-            onClick={rotateFile.bind(this, 90)}
+            page={currentPage}
+            angle={90}
+            onClick={rotateFile}
             disabled={!!rotateLoading}
             className="file-dossier-mirror-horizontal"
           />

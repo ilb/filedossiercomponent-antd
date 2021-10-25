@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ControlsMenu, { getZoomOutScale, getZoomInScale, calcScaleNum } from './ControlsMenu';
+import { Sticky } from 'semantic-ui-react';
 
 export default function ImagesViewer({ file, images, dossierInst, contentRef }) {
   const initialState = {
     currentPage: 1,
     pageText: 1,
-    rotate: 0,
+    rotateArr: new Array(images.length).fill(0),
     rotateLoading: null,
     scaleValue: 'pageWidthOption',
     scaleNum: 1
@@ -44,7 +45,7 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
   /* file changed */
   useEffect(() => {
     resetContainerScroll();
-    setState({ ...initialState, rotate: file.rotate || 0 }); // reset state
+    setState({ ...initialState }); // reset state
   }, [file.fileId, file.lastModified]);
 
   const resetContainerScroll = () => {
@@ -170,9 +171,9 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
   const setScale = (scale) => {
     const imgContainer = contentRef.current;
     const imgs = imgContainer.querySelectorAll('img');
-    const { rotate } = stateRef.current;
-    [].forEach.call(imgs, (img) => {
-      setScalePerImg({ img, scale, rotate });
+    const { rotateArr } = stateRef.current;
+    [].forEach.call(imgs, (img, i) => {
+      setScalePerImg({ img, scale, rotate: rotateArr[i] });
     });
   };
 
@@ -212,19 +213,19 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
     }
   };
 
-  const rotateFile = async (angle) => {
-    resetContainerScroll();
-    const { rotate } = stateRef.current;
-    let newAngle = rotate + angle;
+  const rotateFile = async (event, { angle, page }) => {
+    let { rotateArr } = stateRef.current;
+    let newAngle = rotateArr[page - 1] + angle;
     if (newAngle < 0) {
       newAngle = 270;
     }
     if (newAngle > 270) {
       newAngle = 0;
     }
+    rotateArr[page - 1] = newAngle;
     setState(
       {
-        rotate: newAngle,
+        rotateArr,
         rotateLoading: angle > 0 ? 'CW' : 'CCW' // clockwise / counterclockwise
       },
       (newState) => {
@@ -236,36 +237,38 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
     setState({ rotateLoading: null });
   };
 
-  const imageOnLoadHandler = (event) => {
+  const imageOnLoadHandler = (event, rotate) => {
     const img = event.target;
-    const { scaleValue, rotate } = stateRef.current;
+    const { scaleValue } = stateRef.current;
     setScalePerImg({ img, scale: scaleValue, rotate });
   };
 
-  const { currentPage, pageText, scaleValue, scaleNum, rotate, rotateLoading } = state;
+  const { currentPage, pageText, scaleValue, scaleNum, rotateLoading, rotateArr } = state;
   return (
     <React.Fragment>
-      <ControlsMenu
-        file={file}
-        numPages={images.length}
-        currentPage={currentPage}
-        pageText={pageText}
-        setPage={setPage}
-        setPageText={setPageText}
-        scaleValue={scaleValue}
-        scaleNum={scaleNum}
-        setScale={setScale}
-        rotateFile={rotateFile}
-        rotateLoading={rotateLoading}
-      />
-
-      <div className="file-dossier-img-container" ref={contentRef}>
-        {images.map((image) => (
+      <Sticky>
+        <ControlsMenu
+          attached="top"
+          file={file}
+          numPages={images.length}
+          currentPage={currentPage}
+          pageText={pageText}
+          setPage={setPage}
+          setPageText={setPageText}
+          scaleValue={scaleValue}
+          scaleNum={scaleNum}
+          setScale={setScale}
+          rotateFile={rotateFile}
+          rotateLoading={rotateLoading}
+        />
+      </Sticky>
+      <div attached="bottom" className="file-dossier-img-container" ref={contentRef}>
+        {images.map((image, i) => (
           <div key={image.name}>
             <img
               src={image.src} // key={image.src}
-              className={`ui fluid image file-dossier-img-rotate${rotate}`}
-              onLoad={imageOnLoadHandler}
+              className={`ui fluid image file-dossier-img-rotate${rotateArr[i]}`}
+              onLoad={(event) => imageOnLoadHandler(event, rotateArr[i])}
               // alt="Не удалось отобразить preview файла"
             />
           </div>
