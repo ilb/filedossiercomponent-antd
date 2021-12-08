@@ -62,7 +62,7 @@ export default function FileContent({ basePath, file, mode, sizes }) {
         {
           lastModified: file.lastModified,
           name: file.name,
-          src: makeImageSrcUniq({ src: file.linksByRel.inline, lastModified: file.lastModified })
+          src: makeImageSrcUniq({ src: dossierInst.replaceBasePath(file.linksByRel.inline), lastModified: file.lastModified })
         }
       ];
     } else {
