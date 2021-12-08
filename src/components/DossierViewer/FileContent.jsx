@@ -62,7 +62,10 @@ export default function FileContent({ basePath, file, mode, sizes }) {
         {
           lastModified: file.lastModified,
           name: file.name,
-          src: makeImageSrcUniq({ src: dossierInst.replaceBasePath(file.linksByRel.inline), lastModified: file.lastModified })
+          src: makeImageSrcUniq({
+            src: dossierInst.replaceBasePath(file.linksByRel.inline),
+            lastModified: file.lastModified
+          })
         }
       ];
     } else {
@@ -70,10 +73,13 @@ export default function FileContent({ basePath, file, mode, sizes }) {
         images = containerState.value.map((img) => ({
           ...img,
           src: makeImageSrcUniq({
-            src: `${containerState.url.replace(/index\.json/, '')}/${encodeURIComponent(img.name)}`,
+            src: `${containerState.url.replace(/\/index\.json/, '')}/${encodeURIComponent(
+              img.name
+            )}`,
             lastModified: file.lastModified
           })
         }));
+        console.log(images);
       }
     }
   }
