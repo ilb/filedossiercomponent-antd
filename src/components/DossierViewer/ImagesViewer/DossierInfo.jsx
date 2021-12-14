@@ -12,7 +12,7 @@ function DossierInfo({ file }) {
           as="a"
           content="Скачать"
           icon="download"
-          href={file.linksByRel.attachment}
+          href={file.linksByRelExt.attachment}
           target="_blank"
         />
       )}

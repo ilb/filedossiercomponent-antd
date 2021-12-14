@@ -95,8 +95,10 @@ export default class FileDossier {
         };
 
         preparedFile.linksByRel = {};
+        preparedFile.linksByRelExt = {};
         (file.link || []).forEach((link) => {
           preparedFile.linksByRel[link.rel] = link.href;
+          preparedFile.linksByRelExt[link.rel] = this.replaceBasePath(link.href);
         });
         if (preparedFile.type === 'pdf' && preparedFile.linksByRel.container) {
           preparedFile.linksByRel.pdfContainer =
