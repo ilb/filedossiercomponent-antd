@@ -31,3 +31,6 @@ This package is NOT transpiled, you need to use `next-transpile-modules`
 
 1. `npm i react react-dom semantic-ui-react`
 2. `npm start`
+
+0. 'npm i'
+00. 'npm run dev'
