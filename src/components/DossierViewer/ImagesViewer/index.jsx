@@ -201,9 +201,11 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
     if (rotate % 180 !== 0) {
       // 90 or 270
       const marginOffset = (newWidth - newHeight) / 2;
-      img.style.margin = `${marginOffset}px ${-marginOffset}px`;
+      img.style.left = `${-marginOffset}px`;
+      // img.style.margin = `0 ${-marginOffset}px`;
     } else {
-      img.style.margin = '';
+      img.style.left = '';
+      img.style.margin = ``;
     }
 
     // All images might have different sizes, but we must save current scale, so look at first image always
