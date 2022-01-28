@@ -7,12 +7,12 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
   const initialState = {
     currentPage: 1,
     pageText: 1,
-    rotateArr: new Array(images.length).fill(0),
     rotateLoading: null,
     scaleValue: 'pageWidthOption',
     scaleNum: 1
   };
   const [state, _setState] = useState(initialState);
+  const [rotateArr, setRotateArr] = useState(new Array(images.length).fill(0));
   const stateRef = useRef(state); // for event listeners to always get actual state
   const setState = (updates, cb) => {
     _setState((currentState) => {
@@ -171,7 +171,6 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
   const setScale = (scale) => {
     const imgContainer = contentRef.current;
     const imgs = imgContainer.querySelectorAll('img');
-    const { rotateArr } = stateRef.current;
     [].forEach.call(imgs, (img, i) => {
       setScalePerImg({ img, scale, rotate: rotateArr[i] });
     });
@@ -216,7 +215,6 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
   };
 
   const rotateFile = async (event, { angle, page }) => {
-    let { rotateArr } = stateRef.current;
     let newAngle = rotateArr[page - 1] + angle;
     if (newAngle < 0) {
       newAngle = 270;
@@ -225,9 +223,9 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
       newAngle = 0;
     }
     rotateArr[page - 1] = newAngle;
+    setRotateArr(rotateArr);
     setState(
       {
-        rotateArr,
         rotateLoading: angle > 0 ? 'CW' : 'CCW' // clockwise / counterclockwise
       },
       (newState) => {
@@ -245,7 +243,11 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
     setScalePerImg({ img, scale: scaleValue, rotate });
   };
 
-  const { currentPage, pageText, scaleValue, scaleNum, rotateLoading, rotateArr } = state;
+  useEffect(() => {
+    setRotateArr(new Array(images.length).fill(0));
+  }, [images.length]);
+
+  const { currentPage, pageText, scaleValue, scaleNum, rotateLoading } = state;
   return (
     <React.Fragment>
       <Sticky>
