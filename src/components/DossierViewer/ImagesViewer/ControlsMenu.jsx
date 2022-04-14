@@ -64,7 +64,7 @@ function ControlsMenu({
 }) {
   return (
     <Menu inverted className="file-dossier-file-controls">
-      <Menu.Item position="left" className="file-dossier-file-name" title={file.name}>
+      <Menu.Item fitted position="left" className="file-dossier-file-name" title={file.name}>
         <span>{file.name}</span>
       </Menu.Item>
 
