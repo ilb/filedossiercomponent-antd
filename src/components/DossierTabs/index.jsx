@@ -14,7 +14,7 @@ export default function DossierTabs({
   const [selectedFile, selectFile] = useState();
   const [filesUploaded, setFilesUploaded] = useState(false);
 
-  useEffect(async () => {
+  useEffect(() => {
     if (!dossierFiles.find(({ code }) => code === selectedFile?.code)) {
       selectFile(dossierFiles[0]);
     } else {

@@ -5,16 +5,16 @@ import FileContent from '../DossierViewer/FileContent';
 import { useDropzone } from 'react-dropzone';
 // todo component
 export default function DossierInlineTabs({
-                                      basePath,
-                                      dossierFiles,
-                                      actionsState,
-                                      dossierActions,
-                                      onUploadHandler
-                                    }) {
+  basePath,
+  dossierFiles,
+  actionsState,
+  dossierActions,
+  onUploadHandler
+}) {
   const [selectedFile, selectFile] = useState();
   const [filesUploaded, setFilesUploaded] = useState(false);
 
-  useEffect(async () => {
+  useEffect(() => {
     if (!dossierFiles.find(({ code }) => code === selectedFile?.code)) {
       selectFile(dossierFiles[0]);
     } else {
@@ -70,63 +70,64 @@ export default function DossierInlineTabs({
             <Header>Досье</Header>
           </div>
           {dossierFiles.length > 0 && (
-           <>
-             <Menu fluid widths={dossierFiles.length}>
-               {dossierFiles.map((df) => {
-                 return (
-                   <Menu.Item
-                     key={df.code}
-                     name={df.code}
-                     active={df.code === selectedFile?.code}
-                     onClick={onTabChange}>
-                     <div>
-                       {df.name}
-                       <Transition
-
-                         visible={df.code === selectedFile?.code && df.exists && filesUploaded}
-                         animation="scale"
-                         duration={500}>
-                         <Label style={{top: -30}} attached="top right">
-                           <Icon name="check circle" color="green" loading={actionsState.loading} />
-                           Файл загружен
-                         </Label>
-                       </Transition>
-                     </div>
-                   </Menu.Item>
-                 );
-               })}
-             </Menu>
-             {selectedFile && !selectedFile.readonly && (
-               <Segment.Group
-                 horizontal
-                 style={{
-                   border: '1px',
-                   borderStyle: 'dashed',
-                   cursor: 'pointer'
-                 }}>
-                 <Segment
-                   textAlign="center"
-                   style={{
-                     minHeight: 0
-                   }}>
-                   <div {...updateDropzone.getRootProps({ className: 'updateDropzone' })}>
-                     <div style={{ opacity: 0.9, marginBottom: 8 }}>Добавить файл</div>
-                     <div style={{ opacity: 0.5 }}>Нажмите или перетащите</div>
-                     <input {...updateDropzone.getInputProps()} />
-                   </div>
-                 </Segment>
-                 <Segment
-                   textAlign="center"
-                   style={{ minHeight: 0 }}>
-                   <div {...replaceDropzone.getRootProps({ className: 'replaceDropzone' })}>
-                     <div style={{ opacity: 0.9, marginBottom: 8 }}>Заменить файл</div>
-                     <div style={{ opacity: 0.5 }}>Нажмите или перетащите</div>{' '}
-                     <input {...replaceDropzone.getInputProps()} />
-                   </div>
-                 </Segment>
-               </Segment.Group>
-             )}
-           </>
+            <>
+              <Menu fluid widths={dossierFiles.length}>
+                {dossierFiles.map((df) => {
+                  return (
+                    <Menu.Item
+                      key={df.code}
+                      name={df.code}
+                      active={df.code === selectedFile?.code}
+                      onClick={onTabChange}>
+                      <div>
+                        {df.name}
+                        <Transition
+                          visible={df.code === selectedFile?.code && df.exists && filesUploaded}
+                          animation="scale"
+                          duration={500}>
+                          <Label style={{ top: -30 }} attached="top right">
+                            <Icon
+                              name="check circle"
+                              color="green"
+                              loading={actionsState.loading}
+                            />
+                            Файл загружен
+                          </Label>
+                        </Transition>
+                      </div>
+                    </Menu.Item>
+                  );
+                })}
+              </Menu>
+              {selectedFile && !selectedFile.readonly && (
+                <Segment.Group
+                  horizontal
+                  style={{
+                    border: '1px',
+                    borderStyle: 'dashed',
+                    cursor: 'pointer'
+                  }}>
+                  <Segment
+                    textAlign="center"
+                    style={{
+                      minHeight: 0
+                    }}>
+                    <div {...updateDropzone.getRootProps({ className: 'updateDropzone' })}>
+                      <div style={{ opacity: 0.9, marginBottom: 8 }}>Добавить файл</div>
+                      <div style={{ opacity: 0.5 }}>Нажмите или перетащите</div>
+                      <input {...updateDropzone.getInputProps()} />
+                    </div>
+                  </Segment>
+                  <Segment textAlign="center" style={{ minHeight: 0 }}>
+                    <div {...replaceDropzone.getRootProps({ className: 'replaceDropzone' })}>
+                      <div style={{ opacity: 0.9, marginBottom: 8 }}>Заменить файл</div>
+                      <div style={{ opacity: 0.5 }}>Нажмите или перетащите</div>{' '}
+                      <input {...replaceDropzone.getInputProps()} />
+                    </div>
+                  </Segment>
+                </Segment.Group>
+              )}
+            </>
           )}
 
           <Segment
