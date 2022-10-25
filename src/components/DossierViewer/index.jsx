@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Select } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import UploadForm from '../UploadForm';
@@ -16,6 +16,10 @@ export default function DossierViewer({
   const [selectedFileCode, selectFile] = useState(dossierFiles[0].code);
   const selectedFile =
     selectedFileCode && dossierFiles.find((file) => file.code === selectedFileCode);
+
+  useEffect(() => {
+    !selectedFile && selectFile(dossierFiles[0].code);
+  }, [selectedFile]);
 
   return (
     <React.Fragment>
