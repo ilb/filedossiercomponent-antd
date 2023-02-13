@@ -318,7 +318,8 @@ export default class FileDossier {
             type: fileResult.contentType || 'application/octet-stream'
           });
         } else {
-          file = Buffer.from(fileResult.value);
+          // было: Buffer.from(fileResult.value), при этом получался странный баг escheck в bailverificationv2
+          file = fileResult.value;
         }
 
         files.push(file);
