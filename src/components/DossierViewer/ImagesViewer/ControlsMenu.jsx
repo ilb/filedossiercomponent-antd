@@ -21,16 +21,13 @@ export const getZoomOutScale = (scaleNum) => {
   return newScale;
 };
 
-export const calcScaleNum = ({ scale, rotate, containerSizes, elementSizes, numPages }) => {
+export const calcScaleNum = ({ scale, rotate, containerSizes, elementSizes, numPages, imgStyle }) => {
   let scaleNum = scale;
   if (scale === 'pageActualOption') {
     scaleNum = 1.0;
   } else if (!scale || scale === 'pageWidthOption' || scale === 'pageFitOption') {
     // calc by container size
     let { width: elemWidth, height: elemHeight } = elementSizes;
-    if (rotate % 180 !== 0) {
-      [elemWidth, elemHeight] = [elemHeight, elemWidth]; // swap
-    }
     scaleNum = containerSizes.width / elemWidth; // scale by width
     // TODO there we assume that if more than 1 pages - it will not fit in container and there will be vertical scroll
     if (scaleNum * elemHeight > containerSizes.height || numPages > 1) {
@@ -41,6 +38,16 @@ export const calcScaleNum = ({ scale, rotate, containerSizes, elementSizes, numP
         scaleNum = (containerSizes.width - 15) / elemWidth; // vertical scroll size
       }
     }
+  } else if (scale === 'pageRotateOption') {
+    // calc by container size
+    let { width: elemWidth, height: elemHeight } = elementSizes;
+    let { width: containerWidth, height: containerHeigh } = containerSizes;
+    imgStyle.transform = 'rotate(' + rotate + 'deg';
+    if (rotate % 180 === 0) {
+      [elemWidth, elemHeight] = [elemHeight, elemWidth]; // swap
+      [containerWidth, containerHeigh] = [containerHeigh, containerWidth]
+    }
+    scaleNum = containerSizes.width / elemWidth; // scale by width
   }
 
   if (!Number(scaleNum)) {
@@ -172,7 +179,7 @@ function ControlsMenu({
           {scaleNum && (
             <Menu.Item
               link
-              icon="undo"
+              icon="redo"
               page={currentPage}
               angle={90}
               onClick={rotateFile}

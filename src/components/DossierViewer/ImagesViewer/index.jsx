@@ -186,7 +186,8 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
       rotate,
       containerSizes,
       elementSizes,
-      numPages: images.length
+      numPages: images.length,
+      imgStyle: img.style
     });
 
     const newWidth = img.naturalWidth * newScaleNum;
@@ -201,9 +202,11 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
       // 90 or 270
       const marginOffset = (newWidth - newHeight) / 2;
       img.style.left = `${-marginOffset}px`;
+      img.style.top = `${marginOffset}px`;
       // img.style.margin = `0 ${-marginOffset}px`;
     } else {
       img.style.left = '';
+      img.style.top = '';
       img.style.margin = ``;
     }
 
@@ -226,7 +229,8 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
     setRotateArr(rotateArr);
     setState(
       {
-        rotateLoading: angle > 0 ? 'CW' : 'CCW' // clockwise / counterclockwise
+        rotateLoading: angle > 0 ? 'CW' : 'CCW', // clockwise / counterclockwise
+        scaleValue: 'pageRotateOption'
       },
       (newState) => {
         // recalc scale after rotate
