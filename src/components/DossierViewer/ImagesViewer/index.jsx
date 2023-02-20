@@ -177,6 +177,7 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
   };
 
   const setScalePerImg = ({ img, scale, rotate }) => {
+    const page = state.currentPage;
     const imgContainer = contentRef.current;
     const { width, height } = window.getComputedStyle(imgContainer);
     const containerSizes = { width: parseFloat(width), height: parseFloat(height) };
@@ -186,17 +187,24 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
       rotate,
       containerSizes,
       elementSizes,
-      numPages: images.length,
-      imgStyle: img.style
+      numPages: images.length
     });
 
     const newWidth = img.naturalWidth * newScaleNum;
     const newHeight = img.naturalHeight * newScaleNum;
+    const containersItems = imgContainer.querySelectorAll('div');
+
+
     img.style.width = `${newWidth}px`;
     img.style.minWidth = `${newWidth}px`;
     img.style.maxWidth = `${newWidth}px`;
     img.style.height = `${newHeight}px`;
     img.style.minHeight = `${newHeight}px`;
+
+    img.style.transform = `rotate(${rotate}deg`;
+    containersItems[page - 1].style.height = `${newHeight}px`;
+    containersItems[page - 1].style.minHeight = `${newHeight}px`;
+    
 
     if (rotate % 180 !== 0) {
       // 90 or 270
