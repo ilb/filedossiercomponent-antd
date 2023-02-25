@@ -21,7 +21,7 @@ export const getZoomOutScale = (scaleNum) => {
   return newScale;
 };
 
-export const calcScaleNum = ({ scale, rotate, containerSizes, elementSizes, numPages }) => {
+export const calcScaleNum = ({ scale, currentScaleNum, rotate, containerSizes, elementSizes, numPages }) => {
   let scaleNum = scale;
   if (scale === 'pageActualOption') {
     scaleNum = 1.0;
@@ -45,7 +45,7 @@ export const calcScaleNum = ({ scale, rotate, containerSizes, elementSizes, numP
     if (rotate % 180 === 0) {
       [elemWidth, elemHeight] = [elemHeight, elemWidth]; // swap
     }
-    scaleNum = containerSizes.width / elemWidth; // scale by width
+    scaleNum = currentScaleNum; // scale by width
   }
 
   if (!Number(scaleNum)) {
