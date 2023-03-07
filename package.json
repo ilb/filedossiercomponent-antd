@@ -2,7 +2,7 @@
   "name": "@ilb/filedossiercomponent",
   "version": "2.1.49",
   "description": "",
-  "main": "src/index.mjs",
+  "main": "src/index.jsx",
   "scripts": {
     "dev": "next",
     "build": "next build",
