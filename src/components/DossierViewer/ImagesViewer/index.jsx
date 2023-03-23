@@ -212,8 +212,8 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
         container.style.height = `${newWidth}px`;
         container.style.minHeight = `${newWidth}px`;
       } else {
-        img.style.left = '';
-        img.style.top = '';
+        img.style.left = ``;
+        img.style.top = ``;
         img.style.margin = ``;
         container.style.height = `${newHeight}px`;
         container.style.minHeight = `${newHeight}px`;
