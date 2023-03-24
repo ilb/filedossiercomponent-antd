@@ -171,17 +171,20 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
   const setScale = (scale) => {
     const imgContainer = contentRef.current;
     const imgs = imgContainer.querySelectorAll('img');
+    const containersItems = imgContainer.querySelectorAll('div');
     [].forEach.call(imgs, (img, i) => {
-      setScalePerImg({ img, scale, rotate: rotateArr[i] });
+      setScalePerImg({ img, scale, rotate: rotateArr[i], container: containersItems[i] });
     });
   };
 
-  const setScalePerImg = ({ img, scale, rotate }) => {
+  const setScalePerImg = ({ img, scale, rotate, container }) => {
+    const currentScaleNum = state.scaleNum;
     const imgContainer = contentRef.current;
     const { width, height } = window.getComputedStyle(imgContainer);
     const containerSizes = { width: parseFloat(width), height: parseFloat(height) };
     const elementSizes = { width: img.naturalWidth, height: img.naturalHeight };
     const newScaleNum = calcScaleNum({
+      currentScaleNum,
       scale,
       rotate,
       containerSizes,
@@ -191,20 +194,30 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
 
     const newWidth = img.naturalWidth * newScaleNum;
     const newHeight = img.naturalHeight * newScaleNum;
+
+
     img.style.width = `${newWidth}px`;
     img.style.minWidth = `${newWidth}px`;
     img.style.maxWidth = `${newWidth}px`;
     img.style.height = `${newHeight}px`;
     img.style.minHeight = `${newHeight}px`;
+    img.style.transform = `rotate(${rotate}deg`;
 
-    if (rotate % 180 !== 0) {
-      // 90 or 270
-      const marginOffset = (newWidth - newHeight) / 2;
-      img.style.left = `${-marginOffset}px`;
-      // img.style.margin = `0 ${-marginOffset}px`;
-    } else {
-      img.style.left = '';
-      img.style.margin = ``;
+    if (container) {
+      if (rotate % 180 !== 0) {
+        // 90 or 270
+        const marginOffset = (newWidth - newHeight) / 2;
+        img.style.left = `${-marginOffset}px`;
+        img.style.top = `${marginOffset}px`;
+        container.style.height = `${newWidth}px`;
+        container.style.minHeight = `${newWidth}px`;
+      } else {
+        img.style.left = ``;
+        img.style.top = ``;
+        img.style.margin = ``;
+        container.style.height = `${newHeight}px`;
+        container.style.minHeight = `${newHeight}px`;
+      }
     }
 
     // All images might have different sizes, but we must save current scale, so look at first image always
@@ -226,7 +239,8 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
     setRotateArr(rotateArr);
     setState(
       {
-        rotateLoading: angle > 0 ? 'CW' : 'CCW' // clockwise / counterclockwise
+        rotateLoading: angle > 0 ? 'CW' : 'CCW', // clockwise / counterclockwise
+        scaleValue: 'pageRotateOption'
       },
       (newState) => {
         // recalc scale after rotate
