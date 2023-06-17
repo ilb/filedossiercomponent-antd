@@ -1,5 +1,5 @@
 import FormData from 'form-data';
-import fetch from 'isomorphic-fetch';
+import fetch from 'cross-fetch';
 
 import { parseResponseTry, getContentType } from '../utils/response';
 
