@@ -202,6 +202,8 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
     img.style.height = `${newHeight}px`;
     img.style.minHeight = `${newHeight}px`;
     img.style.transform = `rotate(${rotate}deg`;
+    img.style.border = '1px';
+    imgContainer.style.overflow = 'hidden';
 
     if (container) {
       if (rotate % 180 !== 0) {
