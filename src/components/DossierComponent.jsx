@@ -63,7 +63,7 @@ export default function DossierComponent(props) {
     }
   }, [...Object.values(dossierParams)]);
 
-  const { header, mode, filesFilter, readOnly, height = '100%' } = props;
+  const { header, mode, filesFilter, sort, readOnly, height = '100%' } = props;
   const { dossier, error, loading, external } = dossierData;
 
   let FilesComponent;
@@ -89,6 +89,13 @@ export default function DossierComponent(props) {
 
   // filter dossie files that will be showed
   let dossierFiles = (dossier && dossier.dossierFile) || [];
+  if (sort) {
+    if (typeof sort === 'function') {
+      dossierFiles = dossierFiles.sort(sort);
+    } else {
+      throw new Error('Invalid {sort} type');
+    }
+  };
   if (filesFilter) {
     if (typeof filesFilter === 'function') {
       dossierFiles = dossierFiles.filter(filesFilter);
@@ -133,9 +140,8 @@ export default function DossierComponent(props) {
           <Message
             error
             visible
-            header={`Ошибка при выполнении действия с досье${
-              actionsState.description ? `: ${actionsState.description}` : ''
-            }`}
+            header={`Ошибка при выполнении действия с досье${actionsState.description ? `: ${actionsState.description}` : ''
+              }`}
             content={actionsState.error}
           />
         )}
