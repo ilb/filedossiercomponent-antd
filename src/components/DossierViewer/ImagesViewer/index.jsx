@@ -12,7 +12,7 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
     scaleNum: 1
   };
   const [state, _setState] = useState(initialState);
-  const [rotateArr, setRotateArr] = useState(new Array(images.length).fill(0));
+  const [rotateArr, setRotateArr] = useState(new Array(images.length));
   const stateRef = useRef(state); // for event listeners to always get actual state
   const setState = (updates, cb) => {
     _setState((currentState) => {
