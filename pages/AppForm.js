@@ -8,6 +8,7 @@ export default function AppForm() {
     dossierCode: 'TEST',
     dossierMode: 'mode1'
   };
+
   return (
     <DossierComponent
       height="calc(100vh - 10rem)"
