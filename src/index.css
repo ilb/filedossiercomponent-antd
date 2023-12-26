@@ -31,14 +31,13 @@
   box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.15) !important;
 }
 
-
 .file-dossier-file-controls {
   margin: 0 !important;
   border-radius: 0 !important;
   min-height: 2rem !important;
 }
 
-.file-dossier-file-controls .item {
+/* .file-dossier-file-controls .item {
   padding: 0.5rem 0.8rem !important;
 }
 
@@ -73,7 +72,7 @@
 
 .file-dossier-file-controls .file-dossier-scale-selection>.menu>.item:nth-child(3) {
   border-bottom: 1px solid rgba(34, 36, 38, 0.15) !important;
-}
+} */
 
 .file-dossier-dossier-info>.icon {
   margin: 0 !important;
