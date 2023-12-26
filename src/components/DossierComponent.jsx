@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Segment, Header, Message } from 'semantic-ui-react';
+
+import { Alert, Card, Typography } from 'antd';
+
 import FileDossier from '../classes/FileDossier';
 import DossierViewer from './DossierViewer';
-import DossierTable from './DossierTable';
-import DossierDropzone from './DossierDropzone';
-import DossierTabs from './DossierTabs';
-import DossierInlineTabs from './DossierInlineTabs';
+
+/* Раскомментировать после перевода компонентов на Antd */
+// import DossierTable from './DossierTable';
+// import DossierDropzone from './DossierDropzone';
+// import DossierTabs from './DossierTabs';
+// import DossierInlineTabs from './DossierInlineTabs';
 
 export default function DossierComponent(props) {
   const {
@@ -16,6 +20,7 @@ export default function DossierComponent(props) {
     dossierDataChangeHandler,
     onUploadHandler
   } = props;
+
   var [dossierData, _setDossierData] = useState({
     loading: false,
     error: null,
@@ -28,6 +33,7 @@ export default function DossierComponent(props) {
   const setDossierData = (newState) => {
     const newDossierData = { ...dossierData, ...newState };
     _setDossierData(newDossierData);
+
     if (dossierDataChangeHandler) {
       dossierDataChangeHandler(newDossierData);
     }
@@ -66,36 +72,41 @@ export default function DossierComponent(props) {
   const { header, mode, filesFilter, sort, readOnly, height = '100%' } = props;
   const { dossier, error, loading, external } = dossierData;
 
-  let FilesComponent;
-  switch (mode) {
-    case 'preview':
-      FilesComponent = DossierViewer;
-      break;
-    case 'table':
-      FilesComponent = DossierTable;
-      break;
-    case 'dropzone':
-      FilesComponent = DossierDropzone;
-      break;
-    case 'tabs':
-      FilesComponent = DossierTabs;
-      break;
-    case 'inline_tabs':
-      FilesComponent = DossierInlineTabs;
-      break;
-    default:
-      FilesComponent = DossierTable; // default as table
-  }
+  let FilesComponent = DossierViewer;
+
+  /* Раскомментировать после перевода компонентов на Antd */
+  // let FilesComponent;
+  // switch (mode) {
+  //   case 'preview':
+  //     FilesComponent = DossierViewer;
+  //     break;
+  //   case 'table':
+  //     FilesComponent = DossierTable;
+  //     break;
+  //   case 'dropzone':
+  //     FilesComponent = DossierDropzone;
+  //     break;
+  //   case 'tabs':
+  //     FilesComponent = DossierTabs;
+  //     break;
+  //   case 'inline_tabs':
+  //     FilesComponent = DossierInlineTabs;
+  //     break;
+  //   default:
+  //     FilesComponent = DossierTable; // default as table
+  // }
 
   // filter dossie files that will be showed
   let dossierFiles = (dossier && dossier.dossierFile) || [];
+
   if (sort) {
     if (typeof sort === 'function') {
       dossierFiles = dossierFiles.sort(sort);
     } else {
       throw new Error('Invalid {sort} type');
     }
-  };
+  }
+
   if (filesFilter) {
     if (typeof filesFilter === 'function') {
       dossierFiles = dossierFiles.filter(filesFilter);
@@ -112,7 +123,7 @@ export default function DossierComponent(props) {
   }
 
   return (
-    <Segment basic loading={loading} className="file-dossier" style={{ padding: 0, margin: 0 }}>
+    <Card loading={loading} className="file-dossier" style={{ padding: 0, margin: 0 }}>
       <div
         style={{
           color: 'rgba(0,0,0,0.87)',
@@ -122,31 +133,39 @@ export default function DossierComponent(props) {
           flexFlow: 'column'
         }}>
         {header && !!dossier && (
-          <Header dividing content={header === true ? dossier.name : header} />
+          <Typography.Title level={2}>{header === true ? dossier.name : header}</Typography.Title>
         )}
+
         {!(dossierParams && dossierParams.dossierKey) && (
-          <Message error visible header="В компонент не переданы данные по досье" />
+          <Alert message="В компонент не переданы данные по досье" type="error" showIcon />
         )}
-        {!!error && <Message error visible header="Ошибка при загрузке досье" content={error} />}
+
+        {!!error && (
+          <Alert message="Ошибка при загрузке досье" description={error} type="error" showIcon />
+        )}
+
         {!!(external && external.error) && (
-          <Message
-            error
-            visible
-            header="Ошибка при загрузке внешнего досье"
-            content={external.error}
+          <Alert
+            message="Ошибка при загрузке внешнего досье"
+            description={external.error}
+            type="error"
+            showIcon
           />
         )}
+
         {!!actionsState.error && (
-          <Message
-            error
-            visible
-            header={`Ошибка при выполнении действия с досье${actionsState.description ? `: ${actionsState.description}` : ''
-              }`}
-            content={actionsState.error}
+          <Alert
+            message={`Ошибка при выполнении действия с досье${
+              actionsState.description ? `: ${actionsState.description}` : ''
+            }`}
+            description={actionsState.error}
+            type="error"
+            showIcon
           />
         )}
+
         {dossier && !dossierFiles.length && (
-          <Message error visible header="Отсутствуют файлы в досье" />
+          <Alert message="Отсутствуют файлы в досье" type="error" showIcon />
         )}
 
         {dossier && dossierFiles.length > 0 && (
@@ -161,7 +180,7 @@ export default function DossierComponent(props) {
           />
         )}
       </div>
-    </Segment>
+    </Card>
   );
 }
 
