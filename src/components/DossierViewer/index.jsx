@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Select } from 'semantic-ui-react';
+// import { Select } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import UploadForm from '../UploadForm';
-import ExternalDossier from '../ExternalDossier';
 import FileContent from './FileContent';
+
+/* Раскомментировать после перевода компонентов на Antd */
+// import UploadForm from '../UploadForm';
+// import ExternalDossier from '../ExternalDossier';
 
 export default function DossierViewer({
   basePath,
@@ -22,8 +24,9 @@ export default function DossierViewer({
   }, [selectedFile]);
 
   return (
-    <React.Fragment>
-      <div>
+    <>
+      {/* Раскомментировать после перевода компонентов на Antd */}
+      {/* <div>
         {dossierFiles.length > 1 && (
           <Select
             compact
@@ -62,16 +65,12 @@ export default function DossierViewer({
             )}
           </div>
         )}
-      </div>
+      </div> */}
 
       {selectedFile && selectedFile.exists && (
-        <div style={{ flex: '1 1 auto', height: '100px' }}>
-          {' '}
-          {/* min-height 100px */}
-          <FileContent basePath={basePath} file={selectedFile} />
-        </div>
+        <FileContent basePath={basePath} file={selectedFile} />
       )}
-    </React.Fragment>
+    </>
   );
 }
 
