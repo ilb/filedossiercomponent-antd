@@ -1,5 +1,7 @@
 # Filedossier frontend + components v2
 
+## At the moment, only the FileContent component is available for use.
+
 ## Setup
 ```
 npm install --save @ilb/filedossiercomponent
@@ -29,7 +31,7 @@ This package is NOT transpiled, you need to use `next-transpile-modules`
 
 ## development
 
-1. `npm i react react-dom semantic-ui-react`
+1. `npm i react react-dom antd @ant-design/icons`
 2. `npm start`
 
 0. 'npm i'
