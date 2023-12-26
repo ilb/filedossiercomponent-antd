@@ -1,7 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Menu, Dropdown } from 'semantic-ui-react';
 import DossierInfo from './DossierInfo';
+
+import {
+  LeftOutlined,
+  RightOutlined,
+  MinusOutlined,
+  PlusOutlined,
+  CaretDownOutlined,
+  UndoOutlined,
+  RedoOutlined,
+  MenuOutlined
+} from '@ant-design/icons';
+
+import { Dropdown, Space, Input, Button } from 'antd';
 
 const DEFAULT_SCALE_DELTA = 1.1;
 const MIN_SCALE = 0.1;
@@ -11,6 +23,7 @@ export const getZoomInScale = (scaleNum) => {
   let newScale = (scaleNum * DEFAULT_SCALE_DELTA).toFixed(2);
   newScale = Math.ceil(newScale * 10) / 10;
   newScale = Math.min(MAX_SCALE, newScale);
+
   return newScale;
 };
 
@@ -18,11 +31,20 @@ export const getZoomOutScale = (scaleNum) => {
   let newScale = (scaleNum / DEFAULT_SCALE_DELTA).toFixed(2);
   newScale = Math.floor(newScale * 10) / 10;
   newScale = Math.max(MIN_SCALE, newScale);
+
   return newScale;
 };
 
-export const calcScaleNum = ({ scale, currentScaleNum, rotate, containerSizes, elementSizes, numPages }) => {
+export const calcScaleNum = ({
+  scale,
+  currentScaleNum,
+  rotate,
+  containerSizes,
+  elementSizes,
+  numPages
+}) => {
   let scaleNum = scale;
+
   if (scale === 'pageActualOption') {
     scaleNum = 1.0;
   } else if (!scale || scale === 'pageWidthOption' || scale === 'pageFitOption') {
@@ -41,7 +63,7 @@ export const calcScaleNum = ({ scale, currentScaleNum, rotate, containerSizes, e
   } else if (scale === 'pageRotateOption') {
     // calc by container size
     let { width: elemWidth, height: elemHeight } = elementSizes;
-    let { width: containerWidth, height: containerHeigh } = containerSizes;
+    let { width: containerWidth, height: containerHeight } = containerSizes;
     if (rotate % 180 === 0) {
       [elemWidth, elemHeight] = [elemHeight, elemWidth]; // swap
     }
@@ -51,6 +73,7 @@ export const calcScaleNum = ({ scale, currentScaleNum, rotate, containerSizes, e
   if (!Number(scaleNum)) {
     throw new Error(`Invalid scale value = ${scaleNum}`);
   }
+
   return scaleNum;
 };
 
@@ -67,34 +90,70 @@ function ControlsMenu({
   rotateFile,
   rotateLoading
 }) {
+  const items = [
+    { key: 'pageActualOption', label: <b>Реальный размер</b>, onClick: ({ key }) => setScale(key) },
+    {
+      key: 'pageWidthOption',
+      label: <b>По ширине страницы</b>,
+      onClick: ({ key }) => setScale(key)
+    },
+    {
+      key: 'pageFitOption',
+      label: <b>По размеру страницы</b>,
+      onClick: ({ key }) => setScale(key)
+    },
+    { key: '0.5', label: <b>50%</b>, onClick: ({ key }) => setScale(key) },
+    { key: '0.75', label: <b>75%</b>, onClick: ({ key }) => setScale(key) },
+    { key: '1', label: <b>100%</b>, onClick: ({ key }) => setScale(key) },
+    { key: '1.25', label: <b>125%</b>, onClick: ({ key }) => setScale(key) },
+    { key: '1.5', label: <b>150%</b>, onClick: ({ key }) => setScale(key) },
+    { key: '2', label: <b>200%</b>, onClick: ({ key }) => setScale(key) },
+    { key: '3', label: <b>300%</b>, onClick: ({ key }) => setScale(key) },
+    { key: '4', label: <b>400%</b>, onClick: ({ key }) => setScale(key) }
+  ];
+
   return (
     <>
       <div className="file-dossier-file-name" title={file.name}>
-        <span>{file.name}</span>
+        <b>{file.name}</b>
       </div>
-      <Menu inverted className="file-dossier-file-controls" fluid="true">
-        {numPages && numPages > 1 && currentPage && (
-          <Menu.Menu position="left">
-            <Menu.Item
-              link
-              icon="triangle left"
-              value={currentPage - 1}
-              onClick={setPage}
-              disabled={currentPage <= 1}
-            />
-            <Menu.Item
-              link
-              icon="triangle right"
-              value={currentPage + 1}
-              onClick={setPage}
-              disabled={currentPage >= numPages}
-            />
-            <Menu.Item>
+
+      <nav
+        className="file-dossier-file-controls"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '5px 20px',
+          backgroundColor: '#69c0ff'
+        }}>
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between'
+          }}>
+          {numPages && numPages > 1 && currentPage && (
+            <Space style={{ padding: '5px 0' }}>
+              <Button
+                type="primary"
+                icon={<LeftOutlined />}
+                onClick={() => setPage(currentPage - 1)}
+                disabled={currentPage <= 1}
+              />
+
+              <Button
+                type="primary"
+                icon={<RightOutlined />}
+                onClick={() => setPage(currentPage + 1)}
+                disabled={currentPage >= numPages}
+              />
+
               <Input
                 name="pageText"
                 value={pageText || ''}
                 style={{ width: '3rem' }}
-                onChange={(e, { value }) => {
+                onChange={({ target: { value } }) => {
                   setPageText((value || '').replace(/\D/g, ''));
                 }}
                 onFocus={(e) => {
@@ -107,92 +166,74 @@ function ControlsMenu({
                 }} // eslint-disable-line eqeqeq
                 onKeyDown={(e) => {
                   if (e.keyCode === 13 && pageText && Number(pageText)) {
-                    setPage(null, { value: pageText });
+                    setPage(pageText);
                   }
                 }}
               />
-              <span className="file-dossier-page-count-label">&nbsp;из {numPages}</span>
-            </Menu.Item>
-          </Menu.Menu>
-        )}
+              <b className="file-dossier-page-count-label">&nbsp;из {numPages}</b>
+            </Space>
+          )}
 
-        {scaleNum && (
-          <Menu.Menu style={{ display: 'flex', margin: 'auto' }}>
-            <Menu.Item
-              link
-              icon="minus"
-              onClick={() => {
-                setScale(getZoomOutScale(scaleNum));
-              }}
-              disabled={scaleNum <= MIN_SCALE}
-            />
-            <Menu.Item
-              link
-              icon="plus"
-              onClick={() => {
-                setScale(getZoomInScale(scaleNum));
-              }}
-              disabled={scaleNum >= MAX_SCALE}
-            />
-            <Menu.Item className="file-dossier-no-padding">
-              <Dropdown
-                item
-                className="file-dossier-scale-selection"
-                value={scaleValue || 'pageWidthOption'}
-                text={scaleNum ? `${Math.round(scaleNum * 100)}%` : ''}
-                onChange={(e, { value }) => {
-                  setScale(value);
+          {scaleNum && (
+            <Space style={{ padding: '5px 0' }}>
+              <Button
+                type="primary"
+                icon={<MinusOutlined />}
+                onClick={() => {
+                  setScale(getZoomOutScale(scaleNum));
                 }}
-                options={[
-                  { key: 'pageActualOption', value: 'pageActualOption', text: 'Реальный размер' },
-                  { key: 'pageWidthOption', value: 'pageWidthOption', text: 'По ширине страницы' },
-                  { key: 'pageFitOption', value: 'pageFitOption', text: 'По размеру страницы' },
-                  { key: '0.5', value: 0.5, text: '50%' },
-                  { key: '0.75', value: 0.75, text: '75%' },
-                  { key: '1', value: 1, text: '100%' },
-                  { key: '1.25', value: 1.25, text: '125%' },
-                  { key: '1.5', value: 1.5, text: '150%' },
-                  { key: '2', value: 2, text: '200%' },
-                  { key: '3', value: 3, text: '300%' },
-                  { key: '4', value: 4, text: '400%' }
-                ]}
-                selectOnNavigation={false}
-                selectOnBlur={false}
+                disabled={scaleNum <= MIN_SCALE}
               />
-            </Menu.Item>
-          </Menu.Menu>
-        )}
 
-        <Menu.Menu position="right">
-          {scaleNum && (
-            <Menu.Item
-              link
-              icon="undo"
-              page={currentPage}
-              angle={-90}
-              onClick={rotateFile}
-              disabled={!!rotateLoading}
-            />
-          )}
-          {scaleNum && (
-            <Menu.Item
-              link
-              icon="redo"
-              page={currentPage}
-              angle={90}
-              onClick={rotateFile}
-              disabled={!!rotateLoading}
-              className="file-dossier-mirror-horizontal"
-            />
+              <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                onClick={() => {
+                  setScale(getZoomInScale(scaleNum));
+                }}
+                disabled={scaleNum >= MAX_SCALE}
+              />
+
+              <b>{scaleNum ? `${Math.round(scaleNum * 100)}%` : ''}</b>
+
+              <Dropdown
+                className="file-dossier-scale-selection"
+                menu={{ items, selectable: true }}
+                value={scaleValue || 'pageWidthOption'}
+                trigger={['click']}>
+                <CaretDownOutlined />
+              </Dropdown>
+            </Space>
           )}
 
-          <Dropdown item icon="content" className="file-dossier-dossier-info">
-            <Dropdown.Menu>
-              <DossierInfo file={file} />
-            </Dropdown.Menu>
-          </Dropdown>
-        </Menu.Menu>
-      </Menu>
+          <Space>
+            {scaleNum && (
+              <Button
+                type="primary"
+                icon={<UndoOutlined />}
+                onClick={() => rotateFile(-90, currentPage)}
+                disabled={!!rotateLoading}
+              />
+            )}
+            {scaleNum && (
+              <Button
+                type="primary"
+                icon={<RedoOutlined />}
+                onClick={() => rotateFile(90, currentPage)}
+                disabled={!!rotateLoading}
+              />
+            )}
+
+            <Dropdown
+              className="file-dossier-dossier-info"
+              menu={{ items: [{ key: '1', label: <DossierInfo file={file} /> }] }}
+              placement="bottomRight"
+              trigger={['click']}>
+              <MenuOutlined />
+            </Dropdown>
+          </Space>
+        </div>
+      </nav>
     </>
   );
 }
