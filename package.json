@@ -1,6 +1,6 @@
 {
-  "name": "@ilb/filedossiercomponent",
-  "version": "2.1.57",
+  "name": "@ilb/filedossiercomponent-antd",
+  "version": "1.0.0",
   "description": "",
   "main": "src/index.jsx",
   "scripts": {
@@ -10,11 +10,11 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
-  "author": "krasnoperov <krasnoperov@bystrobank.ru>",
+  "author": "bonamente",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://git.ilb.ru/ilb.ru/filedossiercomponent"
+    "url": "https://github.com/ilb/filedossiercomponent-antd"
   },
   "files": [
     "src"
