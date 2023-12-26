@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ControlsMenu, { getZoomOutScale, getZoomInScale, calcScaleNum } from './ControlsMenu';
-import { Sticky } from 'semantic-ui-react';
+
+import { Affix } from 'antd';
 
 export default function ImagesViewer({ file, images, dossierInst, contentRef }) {
   const initialState = {
@@ -12,8 +13,10 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
     scaleNum: 1
   };
   const [state, _setState] = useState(initialState);
+
   const [rotateArr, setRotateArr] = useState(new Array(images.length));
   const stateRef = useRef(state); // for event listeners to always get actual state
+
   const setState = (updates, cb) => {
     _setState((currentState) => {
       const newState = { ...currentState, ...updates }; // merge updates with previous state
@@ -50,6 +53,7 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
 
   const resetContainerScroll = () => {
     const imgContainer = contentRef.current;
+
     if (imgContainer) {
       imgContainer.scrollTop = imgContainer.scrollLeft = 0;
     }
@@ -59,7 +63,9 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
     if (e.ctrlKey) {
       e.preventDefault();
       e.stopPropagation();
+
       const { scaleNum } = stateRef.current;
+
       if (scaleNum) {
         const newScaleNum =
           (e.deltaY || e.detail) > 0 ? getZoomOutScale(scaleNum) : getZoomInScale(scaleNum);
@@ -78,6 +84,7 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
     const imgs = imgContainer.querySelectorAll('img');
     const visiblePages = [];
     let lastEdge = -1;
+
     for (let i = 0; i < imgs.length; i++) {
       const img = imgs[i];
       const imgTop = img.offsetTop + img.clientTop; // currentHeight
@@ -148,7 +155,7 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
     };
   };
 
-  const setPage = (event, { value }) => {
+  const setPage = (value) => {
     const pageNum = Number(value);
     if (!pageNum || pageNum > images.length) {
       if (document.activeElement) {
@@ -195,7 +202,6 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
     const newWidth = img.naturalWidth * newScaleNum;
     const newHeight = img.naturalHeight * newScaleNum;
 
-
     img.style.width = `${newWidth}px`;
     img.style.minWidth = `${newWidth}px`;
     img.style.maxWidth = `${newWidth}px`;
@@ -209,6 +215,7 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
       if (rotate % 180 !== 0) {
         // 90 or 270
         const marginOffset = (newWidth - newHeight) / 2;
+
         img.style.left = `${-marginOffset}px`;
         img.style.top = `${marginOffset}px`;
         container.style.height = `${newWidth}px`;
@@ -229,16 +236,20 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
     }
   };
 
-  const rotateFile = async (event, { angle, page }) => {
+  const rotateFile = async (angle, page) => {
     let newAngle = rotateArr[page - 1] + angle;
+
     if (newAngle < 0) {
       newAngle = 270;
     }
+
     if (newAngle > 270) {
       newAngle = 0;
     }
+
     rotateArr[page - 1] = newAngle;
     setRotateArr(rotateArr);
+
     setState(
       {
         rotateLoading: angle > 0 ? 'CW' : 'CCW', // clockwise / counterclockwise
@@ -249,6 +260,7 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
         setScale(newState.scaleValue); // NOTE: use scaleValue on rotate
       }
     );
+
     await dossierInst.saveFileRotation({ dossierFile: file, angle: newAngle });
     setState({ rotateLoading: null });
   };
@@ -264,9 +276,10 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
   }, [images.length]);
 
   const { currentPage, pageText, scaleValue, scaleNum, rotateLoading } = state;
+
   return (
-    <React.Fragment>
-      <Sticky>
+    <>
+      <Affix>
         <ControlsMenu
           attached="top"
           file={file}
@@ -281,20 +294,27 @@ export default function ImagesViewer({ file, images, dossierInst, contentRef }) 
           rotateFile={rotateFile}
           rotateLoading={rotateLoading}
         />
-      </Sticky>
-      <div attached="bottom" className="file-dossier-img-container" ref={contentRef}>
+      </Affix>
+
+      <div className="file-dossier-img-container" ref={contentRef}>
         {images.map((image, i) => (
           <div key={image.name}>
             <img
-              src={image.src} // key={image.src}
-              className={`ui fluid image file-dossier-img-rotate${rotateArr[i]}`}
+              style={{
+                display: 'block',
+                width: '100%',
+                height: 'auto'
+              }}
+              className={`file-dossier-img-rotate${rotateArr[i]}`}
+              src={image.src}
               onLoad={(event) => imageOnLoadHandler(event, rotateArr[i])}
               // alt="Не удалось отобразить preview файла"
+              alt=""
             />
           </div>
         ))}
       </div>
-    </React.Fragment>
+    </>
   );
 }
 
