@@ -1,22 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Menu } from 'semantic-ui-react';
+
+import { DownloadOutlined } from '@ant-design/icons';
+import { Space } from 'antd';
 
 function DossierInfo({ file }) {
   return (
-    <React.Fragment>
-      <Menu.Item>Имя файла: {file.name}</Menu.Item>
-      {file.lastModified && <Menu.Item>Загружен: {file.lastModified}</Menu.Item>}
-      {file.linksByRel && file.linksByRel.attachment && (
-        <Menu.Item
-          as="a"
-          content="Скачать"
-          icon="download"
-          href={file.linksByRelExt.attachment}
-          target="_blank"
-        />
+    <Space direction="vertical" style={{ maxWidth: '360px' }}>
+      <span style={{ wordBreak: 'break-all' }}>
+        <b>Имя файла:</b> {file.name}
+      </span>
+
+      {file.lastModified && (
+        <span>
+          <b>Загружен:</b> {file.lastModified}
+        </span>
       )}
-    </React.Fragment>
+
+      {file.linksByRel && file.linksByRel.attachment && (
+        <Space size="small">
+          <DownloadOutlined />
+          <a href={file.linksByRelExt.attachment} target="_blank" rel="noreferrer">
+            <b>Скачать</b>
+          </a>
+        </Space>
+      )}
+    </Space>
   );
 }
 
