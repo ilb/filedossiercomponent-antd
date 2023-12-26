@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { List } from 'semantic-ui-react';
+// import { List } from 'semantic-ui-react';
 import FileContent from '../DossierViewer/FileContent';
 
+/* TODO Перевести на Antd */
 export default function ExternalFilesList({ files }) {
   if (!files || !files.length) {
     return null;
