@@ -1,5 +1,5 @@
 import React from 'react';
-import 'semantic-ui-offline/semantic.min.css';
+// import 'semantic-ui-offline/semantic.min.css';
 import AppForm from './AppForm';
 
 export default function App() {
